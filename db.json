@@ -1,14 +1,93 @@
 {
-    "students": [
-      { "id": "1", "name": "Amina Hassan", "email": "amina.hassan@brightpath.edu", "age": 19, "gender": "Female", "course": "Software Development" },
-      { "id": "2", "name": "Brian Otieno", "email": "brian.otieno@brightpath.edu", "age": 21, "gender": "Male", "course": "Networking" },
-      { "id": "3", "name": "Carla Mendes", "email": "carla.mendes@brightpath.edu", "age": 20, "gender": "Female", "course": "Data Analytics" },
-      { "id": "4", "name": "David Kimani", "email": "david.kimani@brightpath.edu", "age": 22, "gender": "Male", "course": "Cybersecurity" },
-      { "id": "5", "name": "Esther Wanjiru", "email": "esther.wanjiru@brightpath.edu", "age": 18, "gender": "Female", "course": "Software Development" },
-      { "id": "6", "name": "Farid Rahman", "email": "farid.rahman@brightpath.edu", "age": 23, "gender": "Male", "course": "Business IT" },
-      { "id": "7", "name": "Grace Achieng", "email": "grace.achieng@brightpath.edu", "age": 20, "gender": "Female", "course": "Data Analytics" },
-      { "id": "8", "name": "Hassan Ali", "email": "hassan.ali@brightpath.edu", "age": 24, "gender": "Male", "course": "Networking" },
-      { "id": "9", "name": "Irene Mutua", "email": "irene.mutua@brightpath.edu", "age": 19, "gender": "Female", "course": "Business IT" },
-      { "id": "10", "name": "Joseph Njoroge", "email": "joseph.njoroge@brightpath.edu", "age": 21, "gender": "Male", "course": "Cybersecurity" }
-    ]
-  }
+  "students": [
+    {
+      "id": "1",
+      "name": "Amina Hassan",
+      "email": "amina.hassan@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Software Development"
+    },
+    {
+      "id": "2",
+      "name": "Brian Otieno",
+      "email": "brian.otieno@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Networking"
+    },
+    {
+      "id": "3",
+      "name": "Carla Mendes",
+      "email": "carla.mendes@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Data Analytics"
+    },
+    {
+      "id": "4",
+      "name": "David Kimani",
+      "email": "david.kimani@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Cybersecurity"
+    },
+    {
+      "id": "5",
+      "name": "Esther Wanjiru",
+      "email": "esther.wanjiru@brightpath.edu",
+      "age": 18,
+      "gender": "Female",
+      "course": "Software Development"
+    },
+    {
+      "id": "6",
+      "name": "Farid Rahman",
+      "email": "farid.rahman@brightpath.edu",
+      "age": 23,
+      "gender": "Male",
+      "course": "Business IT"
+    },
+    {
+      "id": "7",
+      "name": "Grace Achieng",
+      "email": "grace.achieng@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Data Analytics"
+    },
+    {
+      "id": "8",
+      "name": "Hassan Ali",
+      "email": "hassan.ali@brightpath.edu",
+      "age": 24,
+      "gender": "Male",
+      "course": "Networking"
+    },
+    {
+      "id": "9",
+      "name": "Irene Mutua",
+      "email": "irene.mutua@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Business IT"
+    },
+    {
+      "id": "10",
+      "name": "Joseph Njoroge",
+      "email": "joseph.njoroge@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Cybersecurity"
+    },
+    {
+      "name": "Jane",
+      "email": "jane@gmail.com",
+      "age": 22,
+      "gender": "Female",
+      "course": "Software Development",
+      "id": "0xdcgmJyLGQ"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
