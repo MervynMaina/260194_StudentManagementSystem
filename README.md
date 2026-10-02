@@ -22,8 +22,8 @@ Follow these steps to run the application locally on your machine.
 ### 1. Installation
 Clone the repository, navigate to the project directory, and install dependencies:
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/YOUR_STUDENT_ID_StudentManagementSystem.git](https://github.com/YOUR_GITHUB_USERNAME/YOUR_STUDENT_ID_StudentManagementSystem.git)
-cd YOUR_STUDENT_ID_StudentManagementSystem
+git clone [https://github.com/MervynMaina/260194_StudentManagementSystem.git](https://github.com/MervynMaina/260194_StudentManagementSystem.git)
+cd 260194_StudentManagementSystem
 npm install
 npx json-server --watch db.json --port 5000
 npm run dev
