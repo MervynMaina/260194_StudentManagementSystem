@@ -66,6 +66,7 @@ function App() {
           <Route index element={<TeacherDashboard />} />
           <Route path="students" element={<TeacherStudents />} />
           <Route path="students/:id" element={<StudentDetails />} />
+          <Route path="students/edit/:id" element={<EditStudent />} />
           <Route path="settings" element={<TeacherSettings />} />
           <Route path="help" element={<TeacherHelp />} />
         </Route>

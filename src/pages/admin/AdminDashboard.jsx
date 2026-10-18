@@ -12,6 +12,11 @@ const AdminDashboard = () => {
     const loading = studentsLoading || teachersLoading;
     const error = studentsError || teachersError;
 
+    // Dynamically calculate unique departments/courses
+    const activeCoursesCount = students
+        ? new Set(students.map((s) => s.course)).size
+        : 0;
+
     return (
         <div className="container py-3">
             <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
@@ -33,7 +38,7 @@ const AdminDashboard = () => {
 
             {!loading && !error && students && teachers && (
                 <>
-                    <div className="row">
+                    <div className="row g-3">
                         <StatsCard
                             title="Total Students"
                             value={students.length}
@@ -47,8 +52,8 @@ const AdminDashboard = () => {
                             bgClass="bg-success"
                         />
                         <StatsCard
-                            title="Active Departments"
-                            value="5"
+                            title="Active Academic Programs"
+                            value={activeCoursesCount || 5}
                             icon="bi-journal-bookmark"
                             bgClass="bg-dark"
                         />
@@ -58,14 +63,20 @@ const AdminDashboard = () => {
                         <div className="col-lg-8 mb-4">
                             <div className="card shadow-sm border-0 rounded-4">
                                 <div className="card-body p-4">
-                                    <h5 className="fw-bold text-dark mb-3">Recently Added Students</h5>
+                                    <div className="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 className="fw-bold text-dark mb-0">Recently Added Students</h5>
+                                        <Link to="/admin/students" className="btn btn-link btn-sm p-0 text-decoration-none">
+                                            View All &rarr;
+                                        </Link>
+                                    </div>
                                     <div className="table-responsive">
-                                        <table className="table table-hover align-middle">
+                                        <table className="table table-hover align-middle mb-0">
                                             <thead className="table-light">
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>Course</th>
                                                     <th>Email</th>
+                                                    <th className="text-end">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -78,6 +89,14 @@ const AdminDashboard = () => {
                                                             </span>
                                                         </td>
                                                         <td className="text-muted small">{student.email}</td>
+                                                        <td className="text-end">
+                                                            <Link
+                                                                to={`/admin/students/${student.id}`}
+                                                                className="btn btn-outline-primary btn-sm px-2 py-1"
+                                                            >
+                                                                View
+                                                            </Link>
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>

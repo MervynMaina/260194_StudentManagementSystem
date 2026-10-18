@@ -231,9 +231,9 @@ const TeacherStudents = () => {
                     {!loading && !error && (
                         <div className="card shadow-sm border-0 rounded-4">
                             <div className="card-body p-4">
-                                <div className="table-responsive">
-                                    <table className="table table-hover align-middle">
-                                        <thead className="table-light">
+                                <div className="table-responsive" style={{ maxHeight: "480px", overflowY: "auto" }}>
+                                    <table className="table table-hover align-middle mb-0">
+                                        <thead className="table-light sticky-top" style={{ zIndex: 1 }}>
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Course</th>
@@ -258,18 +258,26 @@ const TeacherStudents = () => {
                                                             {student.age} yrs ({student.gender})
                                                         </td>
                                                         <td className="text-end">
-                                                            <Link
-                                                                to={`/students/${student.id}`}
-                                                                className="btn btn-outline-secondary btn-sm px-2 py-1 me-1"
-                                                            >
-                                                                View
-                                                            </Link>
-                                                            <button
-                                                                onClick={() => handleDeleteStudent(student.id)}
-                                                                className="btn btn-outline-danger btn-sm px-2 py-1"
-                                                            >
-                                                                Delete
-                                                            </button>
+                                                            <div className="d-flex justify-content-end gap-1">
+                                                                <Link
+                                                                    to={`/teacher/students/${student.id}`}
+                                                                    className="btn btn-outline-success btn-sm px-2 py-1"
+                                                                >
+                                                                    View
+                                                                </Link>
+                                                                <Link
+                                                                    to={`/teacher/students/edit/${student.id}`}
+                                                                    className="btn btn-outline-secondary btn-sm px-2 py-1"
+                                                                >
+                                                                    Edit
+                                                                </Link>
+                                                                <button
+                                                                    onClick={() => handleDeleteStudent(student.id)}
+                                                                    className="btn btn-outline-danger btn-sm px-2 py-1"
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 ))
