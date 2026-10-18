@@ -2,10 +2,10 @@ import React from "react";
 import useFetch from "../hooks/useFetch";
 import StudentCard from "../components/StudentCard";
 import StatusAlert from "../components/StatusAlert";
-import { API_BASE_URL } from "../config";
+import { API_ENDPOINTS } from "../config"; // Use API_ENDPOINTS here
 
 const Students = () => {
-  const { data: students, loading, error } = useFetch(API_BASE_URL);
+  const { data: students, loading, error } = useFetch(API_ENDPOINTS.STUDENTS);
 
   return (
     <div className="container py-2">

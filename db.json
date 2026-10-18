@@ -1,12 +1,12 @@
 {
   "students": [
     {
-      "id": "1",
       "name": "Amina Hassan",
       "email": "amina.hassan@brightpath.edu",
       "age": 19,
       "gender": "Female",
-      "course": "Software Development"
+      "course": "Software Development",
+      "id": "1"
     },
     {
       "id": "2",
@@ -81,12 +81,128 @@
       "course": "Cybersecurity"
     },
     {
-      "name": "Jane",
-      "email": "jane@gmail.com",
+      "id": "11",
+      "name": "Kevin Chege",
+      "email": "kevin.chege@brightpath.edu",
+      "age": 20,
+      "gender": "Male",
+      "course": "Software Development"
+    },
+    {
+      "id": "12",
+      "name": "Lilian Akinyi",
+      "email": "lilian.akinyi@brightpath.edu",
       "age": 22,
       "gender": "Female",
-      "course": "Software Development",
-      "id": "0xdcgmJyLGQ"
+      "course": "Data Analytics"
+    },
+    {
+      "id": "13",
+      "name": "Mohammed Abdi",
+      "email": "mohammed.abdi@brightpath.edu",
+      "age": 23,
+      "gender": "Male",
+      "course": "Cybersecurity"
+    },
+    {
+      "id": "14",
+      "name": "Natalie Njeri",
+      "email": "natalie.njeri@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Networking"
+    },
+    {
+      "id": "15",
+      "name": "Oscar Omondi",
+      "email": "oscar.omondi@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Business IT"
+    },
+    {
+      "id": "16",
+      "name": "Patricia Wangari",
+      "email": "patricia.wangari@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Software Development"
+    },
+    {
+      "id": "17",
+      "name": "Quentin Juma",
+      "email": "quentin.juma@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Data Analytics"
+    },
+    {
+      "id": "18",
+      "name": "Rachel Nduta",
+      "email": "rachel.nduta@brightpath.edu",
+      "age": 18,
+      "gender": "Female",
+      "course": "Cybersecurity"
+    },
+    {
+      "id": "19",
+      "name": "Samuel Kiprop",
+      "email": "samuel.kiprop@brightpath.edu",
+      "age": 24,
+      "gender": "Male",
+      "course": "Networking"
+    },
+    {
+      "id": "20",
+      "name": "Tatiana Moraa",
+      "email": "tatiana.moraa@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Business IT"
+    }
+  ],
+  "teachers": [
+    {
+      "id": "1",
+      "name": "Dr. James Mwangi",
+      "email": "james.mwangi@brightpath.edu",
+      "department": "Software Development"
+    },
+    {
+      "id": "2",
+      "name": "Prof. Sarah Ouma",
+      "email": "sarah.ouma@brightpath.edu",
+      "department": "Cybersecurity"
+    },
+    {
+      "name": "Eunice Kiprono",
+      "email": "eunice.kiprono@brightpath.edu",
+      "department": "Data Analytics",
+      "id": "3"
+    },
+    {
+      "id": "4",
+      "name": "Eng. Mark Kariuki",
+      "email": "mark.kariuki@brightpath.edu",
+      "department": "Networking"
+    },
+    {
+      "id": "5",
+      "name": "Dr. Beatrice Wamalwa",
+      "email": "beatrice.wamalwa@brightpath.edu",
+      "department": "Business IT"
+    },
+    {
+      "id": "6",
+      "name": "Victor Koech",
+      "email": "victor.koech@brightpath.edu",
+      "department": "Software Development"
+    },
+    {
+      "id": "7",
+      "name": "Dr. Amina Sheikh",
+      "email": "amina.sheikh@brightpath.edu",
+      "department": "Cybersecurity"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
