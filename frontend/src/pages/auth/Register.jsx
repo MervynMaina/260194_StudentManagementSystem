@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Toast from "../../components/Toast";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -8,11 +9,14 @@ const Register = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "teacher", // Default role selection for registration
+        role: "teacher",
     });
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    // Toast state
+    const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,7 +31,6 @@ const Register = () => {
         setLoading(true);
         setError(null);
 
-        // Basic validation
         if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
             setError("Please fill in all required fields.");
             setLoading(false);
@@ -43,7 +46,10 @@ const Register = () => {
         // Simulate registration submission and redirect to login
         setTimeout(() => {
             setLoading(false);
-            navigate("/login");
+            setToast({ show: true, message: "Account registered successfully! Redirecting to login...", type: "success" });
+            setTimeout(() => {
+                navigate("/login");
+            }, 1200);
         }, 900);
     };
 
@@ -51,16 +57,17 @@ const Register = () => {
         <div className="container py-5">
             <div className="row justify-content-center">
                 <div className="col-md-6 col-lg-5">
-                    <div className="card shadow-sm border-0 rounded-4 overflow-hidden">
-                        <div className="bg-primary p-4 text-white text-center">
+                    <div className="card shadow-sm border-0 rounded-4 overflow-hidden hover-elevate">
+                        <div className="bg-primary p-4 text-white text-center position-relative">
+                            <span className="badge bg-white text-primary fw-bold mb-2 px-3 py-1 rounded-pill">New Membership</span>
                             <h3 className="mb-1 fw-bold">Create Account</h3>
                             <p className="mb-0 text-white-50 small">Register for the BrightPath Portal</p>
                         </div>
 
-                        <div className="card-body p-4 bg-white">
+                        <div className="card-body p-4 p-md-5 bg-white">
                             {error && (
-                                <div className="alert alert-danger py-2 mb-3" role="alert">
-                                    {error}
+                                <div className="alert alert-danger py-2 mb-3 rounded-3 small" role="alert">
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>{error}
                                 </div>
                             )}
 
@@ -73,7 +80,7 @@ const Register = () => {
                                         type="text"
                                         id="fullName"
                                         name="fullName"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="e.g. Jane Doe"
                                         value={formData.fullName}
                                         onChange={handleChange}
@@ -89,7 +96,7 @@ const Register = () => {
                                         type="email"
                                         id="email"
                                         name="email"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="user@brightpath.edu"
                                         value={formData.email}
                                         onChange={handleChange}
@@ -104,11 +111,11 @@ const Register = () => {
                                     <select
                                         id="role"
                                         name="role"
-                                        className="form-select"
+                                        className="form-select py-2 rounded-3"
                                         value={formData.role}
                                         onChange={handleChange}
                                     >
-                                        <option value="teacher">Teacher</option>
+                                        <option value="teacher">Teacher Staff</option>
                                         <option value="admin">Administrator</option>
                                     </select>
                                 </div>
@@ -121,7 +128,7 @@ const Register = () => {
                                         type="password"
                                         id="password"
                                         name="password"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="••••••••"
                                         value={formData.password}
                                         onChange={handleChange}
@@ -137,7 +144,7 @@ const Register = () => {
                                         type="password"
                                         id="confirmPassword"
                                         name="confirmPassword"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="••••••••"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
@@ -147,7 +154,7 @@ const Register = () => {
 
                                 <button
                                     type="submit"
-                                    className="btn btn-primary w-100 fw-semibold py-2 rounded-3 mb-3"
+                                    className="btn btn-primary w-100 fw-semibold py-2 rounded-3 mb-3 shadow-sm"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -168,6 +175,13 @@ const Register = () => {
                     </div>
                 </div>
             </div>
+
+            <Toast
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+            />
         </div>
     );
 };

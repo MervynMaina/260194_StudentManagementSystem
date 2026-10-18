@@ -100,3 +100,31 @@ body {
 .carousel-control-next {
   transition: opacity 0.2s ease-in-out;
 }
+
+/* Navbar Frosted Glass Styling */
+.navbar-custom {
+  background: rgba(33, 37, 41, 0.88) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Nav Link Smooth Hover */
+.nav-link-custom {
+  position: relative;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.85rem !important;
+}
+
+.nav-link-custom:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Active Nav State */
+.nav-link-custom.active {
+  color: #ffffff !important;
+  background-color: rgba(13, 110, 253, 0.25);
+  font-weight: 600;
+}

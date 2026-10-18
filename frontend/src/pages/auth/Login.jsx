@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Toast from "../../components/Toast";
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("admin"); // Default selection
+    const [role, setRole] = useState("admin");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    
+    // Toast state
+    const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
-        // Basic validation
         if (!email || !password) {
             setError("Please fill in all fields.");
             setLoading(false);
@@ -24,11 +27,14 @@ const Login = () => {
         // Simulate login flow and navigate based on selected role
         setTimeout(() => {
             setLoading(false);
-            if (role === "admin") {
-                navigate("/admin");
-            } else {
-                navigate("/teacher");
-            }
+            setToast({ show: true, message: `Successfully logged in as ${role === 'admin' ? 'Administrator' : 'Teacher'}!`, type: "success" });
+            setTimeout(() => {
+                if (role === "admin") {
+                    navigate("/admin");
+                } else {
+                    navigate("/teacher");
+                }
+            }, 1000);
         }, 800);
     };
 
@@ -36,16 +42,17 @@ const Login = () => {
         <div className="container py-5">
             <div className="row justify-content-center">
                 <div className="col-md-6 col-lg-5">
-                    <div className="card shadow-sm border-0 rounded-4 overflow-hidden">
-                        <div className="bg-primary p-4 text-white text-center">
+                    <div className="card shadow-sm border-0 rounded-4 overflow-hidden hover-elevate">
+                        <div className="bg-primary p-4 text-white text-center position-relative">
+                            <span className="badge bg-white text-primary fw-bold mb-2 px-3 py-1 rounded-pill">Secure Authentication</span>
                             <h3 className="mb-1 fw-bold">Portal Login</h3>
-                            <p className="mb-0 text-white-50 small">Sign in to access your dashboard</p>
+                            <p className="mb-0 text-white-50 small">Sign in to access your administrative dashboard</p>
                         </div>
 
-                        <div className="card-body p-4 bg-white">
+                        <div className="card-body p-4 p-md-5 bg-white">
                             {error && (
-                                <div className="alert alert-danger py-2 mb-3" role="alert">
-                                    {error}
+                                <div className="alert alert-danger py-2 mb-3 rounded-3 small" role="alert">
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>{error}
                                 </div>
                             )}
 
@@ -56,12 +63,12 @@ const Login = () => {
                                     </label>
                                     <select
                                         id="roleSelect"
-                                        className="form-select"
+                                        className="form-select py-2 rounded-3"
                                         value={role}
                                         onChange={(e) => setRole(e.target.value)}
                                     >
-                                        <option value="admin">Administrator</option>
-                                        <option value="teacher">Teacher</option>
+                                        <option value="admin">Administrator Portal</option>
+                                        <option value="teacher">Teacher Portal</option>
                                     </select>
                                 </div>
 
@@ -72,7 +79,7 @@ const Login = () => {
                                     <input
                                         type="email"
                                         id="email"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="user@brightpath.edu"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -87,7 +94,7 @@ const Login = () => {
                                     <input
                                         type="password"
                                         id="password"
-                                        className="form-control"
+                                        className="form-control py-2 rounded-3"
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -97,7 +104,7 @@ const Login = () => {
 
                                 <button
                                     type="submit"
-                                    className="btn btn-primary w-100 fw-semibold py-2 rounded-3 mb-3"
+                                    className="btn btn-primary w-100 fw-semibold py-2 rounded-3 mb-3 shadow-sm"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -118,6 +125,13 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+
+            <Toast 
+                show={toast.show} 
+                message={toast.message} 
+                type={toast.type} 
+                onClose={() => setToast((prev) => ({ ...prev, show: false }))} 
+            />
         </div>
     );
 };
