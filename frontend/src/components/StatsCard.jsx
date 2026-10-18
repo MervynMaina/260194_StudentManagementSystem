@@ -3,7 +3,7 @@ import React from "react";
 const StatsCard = ({ title, value, icon, bgClass = "bg-primary" }) => {
   return (
     <div className="col-md-4 mb-4">
-      <div className={`card text-white ${bgClass} shadow-sm border-0 rounded-4 h-100`}>
+      <div className={`card text-white ${bgClass} shadow-sm border-0 rounded-4 h-100 hover-elevate`}>
         <div className="card-body p-4 d-flex justify-content-between align-items-center">
           <div>
             <h6 className="text-uppercase fw-semibold text-white-50 small mb-1">{title}</h6>

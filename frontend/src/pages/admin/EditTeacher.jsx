@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { API_ENDPOINTS } from "../../config";
 import StatusAlert from "../../components/StatusAlert";
+import Toast from "../../components/Toast";
 
 const EditTeacher = () => {
     const { id } = useParams();
@@ -15,6 +16,9 @@ const EditTeacher = () => {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState(null);
+
+    // Toast state
+    const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
     useEffect(() => {
         fetch(`${API_ENDPOINTS.TEACHERS}/${id}`)
@@ -56,11 +60,13 @@ const EditTeacher = () => {
                 return res.json();
             })
             .then(() => {
-                navigate("/admin/teachers");
+                setToast({ show: true, message: "Teacher record updated successfully!", type: "success" });
+                setTimeout(() => navigate("/admin/teachers"), 1200);
             })
             .catch((err) => {
                 setError(err.message);
                 setSubmitting(false);
+                setToast({ show: true, message: err.message, type: "danger" });
             });
     };
 
@@ -78,7 +84,7 @@ const EditTeacher = () => {
             {!loading && (
                 <div className="row">
                     <div className="col-lg-6">
-                        <div className="card shadow-sm border-0 rounded-4">
+                        <div className="card shadow-sm border-0 rounded-4 hover-elevate">
                             <div className="card-body p-4">
                                 {error && !loading && <div className="alert alert-danger py-2 small">{error}</div>}
 
@@ -133,6 +139,13 @@ const EditTeacher = () => {
                     </div>
                 </div>
             )}
+
+            <Toast
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+            />
         </div>
     );
 };

@@ -61,7 +61,7 @@ const AdminDashboard = () => {
 
                     <div className="row mt-4">
                         <div className="col-lg-8 mb-4">
-                            <div className="card shadow-sm border-0 rounded-4">
+                            <div className="card shadow-sm border-0 rounded-4 hover-elevate">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
                                         <h5 className="fw-bold text-dark mb-0">Recently Added Students</h5>
@@ -107,7 +107,7 @@ const AdminDashboard = () => {
                         </div>
 
                         <div className="col-lg-4">
-                            <div className="card shadow-sm border-0 rounded-4 bg-light">
+                            <div className="card shadow-sm border-0 rounded-4 bg-light hover-elevate">
                                 <div className="card-body p-4">
                                     <h5 className="fw-bold text-dark mb-3">Quick Navigation</h5>
                                     <div className="list-group list-group-flush rounded-3 overflow-hidden shadow-sm">

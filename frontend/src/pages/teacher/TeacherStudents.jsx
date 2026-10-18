@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "../../config";
 import StatusAlert from "../../components/StatusAlert";
+import Toast from "../../components/Toast";
 
 const TeacherStudents = () => {
     const [students, setStudents] = useState([]);
@@ -19,6 +20,9 @@ const TeacherStudents = () => {
     });
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
+
+    // Toast State
+    const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
     const fetchStudents = () => {
         setLoading(true);
@@ -69,10 +73,12 @@ const TeacherStudents = () => {
                 setStudents((prev) => [...prev, newStudent]);
                 setFormData({ name: "", email: "", age: "", gender: "Female", course: "Software Development" });
                 setSubmitting(false);
+                setToast({ show: true, message: "Student record added successfully!", type: "success" });
             })
             .catch((err) => {
                 setFormError(err.message);
                 setSubmitting(false);
+                setToast({ show: true, message: err.message, type: "danger" });
             });
     };
 
@@ -85,8 +91,12 @@ const TeacherStudents = () => {
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to delete student.");
                 setStudents((prev) => prev.filter((s) => s.id !== id));
+                setToast({ show: true, message: "Student record deleted successfully.", type: "danger" });
             })
-            .catch((err) => alert(err.message));
+            .catch((err) => {
+                alert(err.message);
+                setToast({ show: true, message: err.message, type: "danger" });
+            });
     };
 
     const filteredStudents = students.filter((student) => {
@@ -111,7 +121,7 @@ const TeacherStudents = () => {
             <div className="row">
                 {/* Form Column */}
                 <div className="col-lg-4 mb-4">
-                    <div className="card shadow-sm border-0 rounded-4">
+                    <div className="card shadow-sm border-0 rounded-4 hover-elevate">
                         <div className="card-body p-4">
                             <h5 className="fw-bold text-dark mb-3">Add Student Record</h5>
                             {formError && <div className="alert alert-danger py-2 small">{formError}</div>}
@@ -196,7 +206,7 @@ const TeacherStudents = () => {
 
                 {/* List & Search Column */}
                 <div className="col-lg-8">
-                    <div className="card shadow-sm border-0 rounded-4 mb-4">
+                    <div className="card shadow-sm border-0 rounded-4 mb-4 hover-elevate">
                         <div className="card-body p-3">
                             <div className="row g-2">
                                 <div className="col-md-7">
@@ -229,7 +239,7 @@ const TeacherStudents = () => {
                     <StatusAlert loading={loading} error={error} />
 
                     {!loading && !error && (
-                        <div className="card shadow-sm border-0 rounded-4">
+                        <div className="card shadow-sm border-0 rounded-4 hover-elevate">
                             <div className="card-body p-4">
                                 <div className="table-responsive" style={{ maxHeight: "480px", overflowY: "auto" }}>
                                     <table className="table table-hover align-middle mb-0">
@@ -284,7 +294,7 @@ const TeacherStudents = () => {
                                             ) : (
                                                 <tr>
                                                     <td colSpan="4" className="text-center text-muted py-4">
-                                                        No student records found.
+                                                        No student records found matching your filter.
                                                     </td>
                                                 </tr>
                                             )}
@@ -296,6 +306,14 @@ const TeacherStudents = () => {
                     )}
                 </div>
             </div>
+
+            {/* Global Toast Component */}
+            <Toast
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+            />
         </div>
     );
 };
