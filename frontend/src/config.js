@@ -5,4 +5,5 @@ export const API_BASE_URL = "http://localhost:5000";
 export const API_ENDPOINTS = {
   STUDENTS: `${API_BASE_URL}/students`,
   TEACHERS: `${API_BASE_URL}/teachers`,
+  USERS: `${API_BASE_URL}/users`,
 };

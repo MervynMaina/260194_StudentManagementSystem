@@ -6,10 +6,15 @@ import Toast from "../../components/Toast";
 
 const ManageStudents = () => {
     const [students, setStudents] = useState([]);
+    const [teachers, setTeachers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCourse, setSelectedCourse] = useState("");
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6; // Number of items to display per page
 
     // Form state for adding a new student
     const [formData, setFormData] = useState({
@@ -18,6 +23,8 @@ const ManageStudents = () => {
         age: "",
         gender: "Female",
         course: "Software Development",
+        teacherId: "",
+        teacherEmail: "",
     });
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -25,15 +32,21 @@ const ManageStudents = () => {
     // Toast state
     const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
-    const fetchStudents = () => {
+    const fetchData = () => {
         setLoading(true);
-        fetch(API_ENDPOINTS.STUDENTS)
-            .then((res) => {
+        Promise.all([
+            fetch(API_ENDPOINTS.STUDENTS).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch students.");
                 return res.json();
-            })
-            .then((data) => {
-                setStudents(data);
+            }),
+            fetch(API_ENDPOINTS.TEACHERS).then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch teachers.");
+                return res.json();
+            }),
+        ])
+            .then(([studentsData, teachersData]) => {
+                setStudents(studentsData);
+                setTeachers(teachersData);
                 setLoading(false);
             })
             .catch((err) => {
@@ -43,12 +56,25 @@ const ManageStudents = () => {
     };
 
     useEffect(() => {
-        fetchStudents();
+        fetchData();
     }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+
+        if (name === "course") {
+            // Reset teacher assignment when course changes since departments differ
+            setFormData((prev) => ({ ...prev, course: value, teacherId: "", teacherEmail: "" }));
+        } else if (name === "teacherId") {
+            const selectedTeacher = teachers.find((t) => String(t.id) === String(value));
+            setFormData((prev) => ({
+                ...prev,
+                teacherId: value,
+                teacherEmail: selectedTeacher ? selectedTeacher.email : "",
+            }));
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleAddStudent = (e) => {
@@ -72,7 +98,15 @@ const ManageStudents = () => {
             })
             .then((newStudent) => {
                 setStudents((prev) => [...prev, newStudent]);
-                setFormData({ name: "", email: "", age: "", gender: "Female", course: "Software Development" });
+                setFormData({
+                    name: "",
+                    email: "",
+                    age: "",
+                    gender: "Female",
+                    course: "Software Development",
+                    teacherId: "",
+                    teacherEmail: "",
+                });
                 setSubmitting(false);
                 setToast({ show: true, message: "Student record added successfully!", type: "success" });
             })
@@ -100,6 +134,11 @@ const ManageStudents = () => {
             });
     };
 
+    // Filter teachers matching the student's selected course/department
+    const availableTeachers = teachers.filter(
+        (t) => t.department?.toLowerCase() === formData.course.toLowerCase()
+    );
+
     // Filter students based on search term and selected course
     const filteredStudents = students.filter((student) => {
         const matchesSearch =
@@ -108,6 +147,17 @@ const ManageStudents = () => {
         const matchesCourse = selectedCourse === "" || student.course === selectedCourse;
         return matchesSearch && matchesCourse;
     });
+
+    // Reset pagination to page 1 whenever filters change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, selectedCourse]);
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentStudents = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
 
     return (
         <div className="container py-3">
@@ -200,6 +250,23 @@ const ManageStudents = () => {
                                     </select>
                                 </div>
 
+                                <div className="mb-3">
+                                    <label className="form-label small fw-semibold text-secondary">Assigned Instructor</label>
+                                    <select
+                                        name="teacherId"
+                                        className="form-select"
+                                        value={formData.teacherId}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">-- Unassigned / General --</option>
+                                        {availableTeachers.map((t) => (
+                                            <option key={t.id} value={t.id}>
+                                                {t.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
                                 <button type="submit" className="btn btn-primary w-100 fw-semibold py-2" disabled={submitting}>
                                     {submitting ? "Saving..." : "Save Student"}
                                 </button>
@@ -244,57 +311,67 @@ const ManageStudents = () => {
 
                     {!loading && !error && (
                         <div className="card shadow-sm border-0 rounded-4 hover-elevate">
-                            <div className="card-body p-4">
-                                <div className="table-responsive" style={{ maxHeight: "480px", overflowY: "auto" }}>
+                            <div className="card-body p-4 d-flex flex-column justify-content-between" style={{ minHeight: "420px" }}>
+                                <div className="table-responsive">
                                     <table className="table table-hover align-middle mb-0">
-                                        <thead className="table-light sticky-top" style={{ zIndex: 1 }}>
+                                        <thead className="table-light">
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Course</th>
+                                                <th>Course / Instructor</th>
                                                 <th>Age / Gender</th>
                                                 <th className="text-end">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredStudents.length > 0 ? (
-                                                filteredStudents.map((student) => (
-                                                    <tr key={student.id}>
-                                                        <td>
-                                                            <div className="fw-semibold">{student.name}</div>
-                                                            <small className="text-muted">{student.email}</small>
-                                                        </td>
-                                                        <td>
-                                                            <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                                                                {student.course}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            {student.age} yrs ({student.gender})
-                                                        </td>
-                                                        <td className="text-end">
-                                                            <div className="d-flex justify-content-end gap-1">
-                                                                <Link
-                                                                    to={`/admin/students/${student.id}`}
-                                                                    className="btn btn-outline-primary btn-sm px-2 py-1"
-                                                                >
-                                                                    View
-                                                                </Link>
-                                                                <Link
-                                                                    to={`/admin/students/edit/${student.id}`}
-                                                                    className="btn btn-outline-secondary btn-sm px-2 py-1"
-                                                                >
-                                                                    Edit
-                                                                </Link>
-                                                                <button
-                                                                    onClick={() => handleDeleteStudent(student.id)}
-                                                                    className="btn btn-outline-danger btn-sm px-2 py-1"
-                                                                >
-                                                                    Delete
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))
+                                            {currentStudents.length > 0 ? (
+                                                currentStudents.map((student) => {
+                                                    const assignedTeacher = teachers.find(
+                                                        (t) => String(t.id) === String(student.teacherId)
+                                                    );
+                                                    return (
+                                                        <tr key={student.id}>
+                                                            <td>
+                                                                <div className="fw-semibold">{student.name}</div>
+                                                                <small className="text-muted">{student.email}</small>
+                                                            </td>
+                                                            <td>
+                                                                <div className="mb-1">
+                                                                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
+                                                                        {student.course}
+                                                                    </span>
+                                                                </div>
+                                                                <small className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                                                    Instructor: {assignedTeacher ? assignedTeacher.name : "Unassigned"}
+                                                                </small>
+                                                            </td>
+                                                            <td>
+                                                                {student.age} yrs ({student.gender})
+                                                            </td>
+                                                            <td className="text-end">
+                                                                <div className="d-flex justify-content-end gap-1">
+                                                                    <Link
+                                                                        to={`/admin/students/${student.id}`}
+                                                                        className="btn btn-outline-primary btn-sm px-2 py-1"
+                                                                    >
+                                                                        View
+                                                                    </Link>
+                                                                    <Link
+                                                                        to={`/admin/students/edit/${student.id}`}
+                                                                        className="btn btn-outline-secondary btn-sm px-2 py-1"
+                                                                    >
+                                                                        Edit
+                                                                    </Link>
+                                                                    <button
+                                                                        onClick={() => handleDeleteStudent(student.id)}
+                                                                        className="btn btn-outline-danger btn-sm px-2 py-1"
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
                                             ) : (
                                                 <tr>
                                                     <td colSpan="4" className="text-center text-muted py-4">
@@ -305,6 +382,50 @@ const ManageStudents = () => {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {/* Pagination Footer Controls */}
+                                {totalPages > 1 && (
+                                    <div className="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+                                        <small className="text-muted">
+                                            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredStudents.length)} of {filteredStudents.length} entries
+                                        </small>
+                                        <nav aria-label="Students table pagination">
+                                            <ul className="pagination pagination-sm mb-0">
+                                                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                </li>
+                                                {[...Array(totalPages)].map((_, index) => {
+                                                    const pageNum = index + 1;
+                                                    return (
+                                                        <li key={pageNum} className={`page-item ${currentPage === pageNum ? "active" : ""}`}>
+                                                            <button
+                                                                className="page-link"
+                                                                onClick={() => setCurrentPage(pageNum)}
+                                                            >
+                                                                {pageNum}
+                                                            </button>
+                                                        </li>
+                                                    );
+                                                })}
+                                                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

@@ -8,17 +8,33 @@ import StatusAlert from "../../components/StatusAlert";
 const TeacherDashboard = () => {
     const { data: students, loading, error } = useFetch(API_ENDPOINTS.STUDENTS);
 
+    // Retrieve logged-in teacher details from localStorage
+    const currentUser = JSON.parse(localStorage.getItem("user")) || {};
+    const teacherName = currentUser.fullName || "Faculty Instructor";
+    const teacherDepartment = currentUser.department || "Software Development";
+
+    // Filter students belonging strictly to the logged-in teacher's department
+    const departmentStudents = students
+        ? students.filter((student) => student.course.toLowerCase() === teacherDepartment.toLowerCase())
+        : [];
+
     return (
-        <div className="container py-3">
-            <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                <div>
-                    <span className="badge bg-success text-white fw-bold mb-1">Teacher Portal</span>
-                    <h2 className="fw-bold text-dark mb-0">Teacher Dashboard</h2>
-                </div>
-                <div>
-                    <Link to="/teacher/students" className="btn btn-success btn-sm fw-semibold">
-                        Manage Student Records
-                    </Link>
+        <div className="container py-4">
+            {/* Header Banner */}
+            <div className="card border-0 shadow-sm rounded-4 mb-4 bg-success text-white overflow-hidden hover-elevate">
+                <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                    <div>
+                        <span className="badge bg-white text-success fw-bold mb-2 px-3 py-1 rounded-pill shadow-sm">
+                            Department: {teacherDepartment}
+                        </span>
+                        <h2 className="fw-bold mb-1">Welcome back, {teacherName}!</h2>
+                        <p className="text-white-50 mb-0 small">Overview of student enrollments and roster records for your department.</p>
+                    </div>
+                    <div>
+                        <Link to="/teacher/students" className="btn btn-light btn-sm fw-semibold px-3 py-2 rounded-3 shadow-sm">
+                            Manage Student Records
+                        </Link>
+                    </div>
                 </div>
             </div>
 
@@ -26,34 +42,36 @@ const TeacherDashboard = () => {
 
             {!loading && !error && students && (
                 <>
-                    <div className="row g-3">
+                    {/* Stats Overview Row */}
+                    <div className="row g-3 mb-4">
                         <StatsCard
-                            title="Enrolled Students"
-                            value={students.length}
+                            title="Department Students"
+                            value={departmentStudents.length}
                             icon="bi-mortarboard"
                             bgClass="bg-success"
                         />
                         <StatsCard
                             title="Recent Additions"
-                            value={students.slice(-3).length}
+                            value={departmentStudents.slice(-3).length}
                             icon="bi-person-plus"
                             bgClass="bg-primary"
                         />
                         <StatsCard
-                            title="Active Classes"
-                            value="4"
+                            title="Assigned Department"
+                            value={teacherDepartment}
                             icon="bi-journal-check"
                             bgClass="bg-dark"
                         />
                     </div>
 
-                    <div className="row mt-4">
-                        <div className="col-lg-8 mb-4">
-                            <div className="card shadow-sm border-0 rounded-4 hover-elevate">
+                    <div className="row g-4">
+                        {/* Recently Enrolled Students Table */}
+                        <div className="col-lg-8">
+                            <div className="card shadow-sm border-0 rounded-4 hover-elevate h-100">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 className="fw-bold text-dark mb-0">Recently Enrolled Students</h5>
-                                        <Link to="/teacher/students" className="btn btn-link btn-sm p-0 text-decoration-none">
+                                        <h5 className="fw-bold text-dark mb-0">Department Student Roster</h5>
+                                        <Link to="/teacher/students" className="btn btn-link btn-sm p-0 text-decoration-none fw-semibold">
                                             View All &rarr;
                                         </Link>
                                     </div>
@@ -68,25 +86,33 @@ const TeacherDashboard = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {students.slice(-5).reverse().map((student) => (
-                                                    <tr key={student.id}>
-                                                        <td className="fw-semibold">{student.name}</td>
-                                                        <td>
-                                                            <span className="badge bg-success-subtle text-success border border-success-subtle">
-                                                                {student.course}
-                                                            </span>
-                                                        </td>
-                                                        <td className="text-muted small">{student.email}</td>
-                                                        <td className="text-end">
-                                                            <Link
-                                                                to={`/teacher/students/${student.id}`}
-                                                                className="btn btn-outline-success btn-sm px-2 py-1"
-                                                            >
-                                                                View
-                                                            </Link>
+                                                {departmentStudents.length > 0 ? (
+                                                    departmentStudents.slice(-5).reverse().map((student) => (
+                                                        <tr key={student.id}>
+                                                            <td className="fw-semibold text-dark">{student.name}</td>
+                                                            <td>
+                                                                <span className="badge bg-success-subtle text-success border border-success-subtle">
+                                                                    {student.course}
+                                                                </span>
+                                                            </td>
+                                                            <td className="text-muted small">{student.email}</td>
+                                                            <td className="text-end">
+                                                                <Link
+                                                                    to={`/teacher/students/${student.id}`}
+                                                                    className="btn btn-outline-success btn-sm px-2 py-1"
+                                                                >
+                                                                    View
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="4" className="text-center text-muted py-4">
+                                                            No student records found for {teacherDepartment}.
                                                         </td>
                                                     </tr>
-                                                ))}
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>
@@ -94,20 +120,26 @@ const TeacherDashboard = () => {
                             </div>
                         </div>
 
+                        {/* Teacher Quick Actions Panel */}
                         <div className="col-lg-4">
-                            <div className="card shadow-sm border-0 rounded-4 bg-light hover-elevate">
-                                <div className="card-body p-4">
-                                    <h5 className="fw-bold text-dark mb-3">Teacher Quick Actions</h5>
-                                    <div className="list-group list-group-flush rounded-3 overflow-hidden shadow-sm">
-                                        <Link to="/teacher/students" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; View & Filter Student Directory
-                                        </Link>
-                                        <Link to="/teacher/settings" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; Update Account Details
-                                        </Link>
-                                        <Link to="/teacher/help" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; Teacher Help & Documentation
-                                        </Link>
+                            <div className="card shadow-sm border-0 rounded-4 bg-white hover-elevate h-100">
+                                <div className="card-body p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <h5 className="fw-bold text-dark mb-3">Teacher Quick Actions</h5>
+                                        <div className="list-group list-group-flush rounded-3 overflow-hidden border border-light-subtle">
+                                            <Link to="/teacher/students" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; View & Filter Student Directory
+                                            </Link>
+                                            <Link to="/teacher/settings" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; Update Account Details & Password
+                                            </Link>
+                                            <Link to="/teacher/help" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; Teacher Help & Documentation
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 pt-3 border-top text-muted small text-center">
+                                        BrightPath College Faculty Portal
                                     </div>
                                 </div>
                             </div>

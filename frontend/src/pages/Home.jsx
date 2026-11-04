@@ -20,14 +20,11 @@ const Home = () => {
           </span>
           <h1 className="display-4 fw-bold mb-3 tracking-tight">Centralized Student Management System</h1>
           <p className="fs-5 opacity-90 mb-4 lh-base">
-            A secure platform designed to transition academic records into an efficient, role-based web interface for administrators and teaching staff.
+            A secure platform designed to transition academic records into an efficient, role-based web interface for authorized administrators and teaching staff.
           </p>
           <div className="d-flex flex-wrap gap-3">
             <Link to="/login" className="btn btn-light text-primary btn-lg fw-bold px-4 rounded-3 shadow-sm">
               Staff Portal Login &rarr;
-            </Link>
-            <Link to="/students" className="btn btn-outline-light btn-lg fw-semibold px-4 rounded-3">
-              Browse Public Directory
             </Link>
           </div>
         </div>
@@ -56,7 +53,7 @@ const Home = () => {
                   <span className="badge bg-white text-primary fw-bold mb-2">Role-Based Portals</span>
                   <h3 className="fw-bold mb-2">Dedicated Admin & Teacher Layouts</h3>
                   <p className="mb-0 opacity-90">
-                    Custom-built sidebar layouts, context-aware navigation, and active tab highlights optimized for institutional workflows.
+                    Custom-built dashboard layouts, context-aware navigation, and active tab highlights optimized for institutional workflows.
                   </p>
                 </div>
               </div>
@@ -75,7 +72,7 @@ const Home = () => {
                   <span className="badge bg-white text-success fw-bold mb-2">Complete Student Lifecycle</span>
                   <h3 className="fw-bold mb-2">Full CRUD Record Management</h3>
                   <p className="mb-0 opacity-90">
-                    Add new admissions, inspect comprehensive profiles, edit enrollment details, and remove obsolete records with instant feedback.
+                    Add new admissions, inspect comprehensive profiles, edit enrollment details, and manage records with instant feedback.
                   </p>
                 </div>
               </div>
@@ -114,38 +111,26 @@ const Home = () => {
 
       {/* Role Feature Grid */}
       <div className="row g-4 mb-4">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <div className="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white hover-elevate">
             <div className="mb-3 text-primary fs-2">
               <i className="bi bi-shield-lock-fill"></i>
             </div>
-            <h4 className="fw-bold text-dark mb-2">Administrator Access</h4>
+            <h4 className="fw-bold text-dark mb-2">Administrator Oversight</h4>
             <p className="text-muted small mb-0">
-              Complete oversight over both student directory records and faculty teaching staff with full edit and deletion privileges.
+              Complete control over student directory records, faculty staff management, and system-wide account provisioning.
             </p>
           </div>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-md-6">
           <div className="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white hover-elevate">
             <div className="mb-3 text-success fs-2">
               <i className="bi bi-person-badge-fill"></i>
             </div>
             <h4 className="fw-bold text-dark mb-2">Faculty Roster Management</h4>
             <p className="text-muted small mb-0">
-              Teachers can manage class enrollment, view individual student profiles, and update academic details seamlessly.
-            </p>
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <div className="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white hover-elevate">
-            <div className="mb-3 text-info fs-2">
-              <i className="bi bi-search"></i>
-            </div>
-            <h4 className="fw-bold text-dark mb-2">Public Catalog</h4>
-            <p className="text-muted small mb-0">
-              Read-only directory access for guests and prospective students to explore course offerings and department rosters.
+              Dedicated teacher workspaces to manage class enrollments, inspect individual student profiles, and update academic data seamlessly.
             </p>
           </div>
         </div>

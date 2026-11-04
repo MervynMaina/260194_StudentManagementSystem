@@ -12,25 +12,31 @@ const AdminDashboard = () => {
     const loading = studentsLoading || teachersLoading;
     const error = studentsError || teachersError;
 
-    // Dynamically calculate unique departments/courses
+    // Dynamically calculate unique active courses
     const activeCoursesCount = students
         ? new Set(students.map((s) => s.course)).size
         : 0;
 
     return (
-        <div className="container py-3">
-            <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                <div>
-                    <span className="badge bg-primary text-white fw-bold mb-1">Administrator Portal</span>
-                    <h2 className="fw-bold text-dark mb-0">Admin Dashboard</h2>
-                </div>
-                <div className="d-flex gap-2">
-                    <Link to="/admin/students" className="btn btn-outline-primary btn-sm fw-semibold">
-                        Manage Students
-                    </Link>
-                    <Link to="/admin/teachers" className="btn btn-outline-secondary btn-sm fw-semibold">
-                        Manage Teachers
-                    </Link>
+        <div className="container py-4">
+            {/* Header Banner */}
+            <div className="card border-0 shadow-sm rounded-4 mb-4 bg-primary text-white overflow-hidden hover-elevate">
+                <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                    <div>
+                        <span className="badge bg-white text-primary fw-bold mb-2 px-3 py-1 rounded-pill shadow-sm">
+                            Administrator Portal
+                        </span>
+                        <h2 className="fw-bold mb-1">Admin Dashboard</h2>
+                        <p className="text-white-50 mb-0 small">Overview of institutional data, student rosters, and faculty directories.</p>
+                    </div>
+                    <div className="d-flex gap-2">
+                        <Link to="/admin/students" className="btn btn-light btn-sm fw-semibold px-3 py-2 rounded-3 shadow-sm">
+                            Manage Students
+                        </Link>
+                        <Link to="/admin/teachers" className="btn btn-outline-light btn-sm fw-semibold px-3 py-2 rounded-3">
+                            Manage Teachers
+                        </Link>
+                    </div>
                 </div>
             </div>
 
@@ -38,7 +44,8 @@ const AdminDashboard = () => {
 
             {!loading && !error && students && teachers && (
                 <>
-                    <div className="row g-3">
+                    {/* Stats Overview Row */}
+                    <div className="row g-3 mb-4">
                         <StatsCard
                             title="Total Students"
                             value={students.length}
@@ -59,13 +66,14 @@ const AdminDashboard = () => {
                         />
                     </div>
 
-                    <div className="row mt-4">
-                        <div className="col-lg-8 mb-4">
-                            <div className="card shadow-sm border-0 rounded-4 hover-elevate">
+                    <div className="row g-4">
+                        {/* Recently Added Students Table */}
+                        <div className="col-lg-8">
+                            <div className="card shadow-sm border-0 rounded-4 hover-elevate h-100">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
                                         <h5 className="fw-bold text-dark mb-0">Recently Added Students</h5>
-                                        <Link to="/admin/students" className="btn btn-link btn-sm p-0 text-decoration-none">
+                                        <Link to="/admin/students" className="btn btn-link btn-sm p-0 text-decoration-none fw-semibold">
                                             View All &rarr;
                                         </Link>
                                     </div>
@@ -80,25 +88,33 @@ const AdminDashboard = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {students.slice(-5).reverse().map((student) => (
-                                                    <tr key={student.id}>
-                                                        <td className="fw-semibold">{student.name}</td>
-                                                        <td>
-                                                            <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                                                                {student.course}
-                                                            </span>
-                                                        </td>
-                                                        <td className="text-muted small">{student.email}</td>
-                                                        <td className="text-end">
-                                                            <Link
-                                                                to={`/admin/students/${student.id}`}
-                                                                className="btn btn-outline-primary btn-sm px-2 py-1"
-                                                            >
-                                                                View
-                                                            </Link>
+                                                {students.length > 0 ? (
+                                                    students.slice(-5).reverse().map((student) => (
+                                                        <tr key={student.id}>
+                                                            <td className="fw-semibold text-dark">{student.name}</td>
+                                                            <td>
+                                                                <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
+                                                                    {student.course}
+                                                                </span>
+                                                            </td>
+                                                            <td className="text-muted small">{student.email}</td>
+                                                            <td className="text-end">
+                                                                <Link
+                                                                    to={`/admin/students/${student.id}`}
+                                                                    className="btn btn-outline-primary btn-sm px-2 py-1"
+                                                                >
+                                                                    View
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="4" className="text-center text-muted py-4">
+                                                            No student records found.
                                                         </td>
                                                     </tr>
-                                                ))}
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>
@@ -106,23 +122,29 @@ const AdminDashboard = () => {
                             </div>
                         </div>
 
+                        {/* Quick Navigation Panel */}
                         <div className="col-lg-4">
-                            <div className="card shadow-sm border-0 rounded-4 bg-light hover-elevate">
-                                <div className="card-body p-4">
-                                    <h5 className="fw-bold text-dark mb-3">Quick Navigation</h5>
-                                    <div className="list-group list-group-flush rounded-3 overflow-hidden shadow-sm">
-                                        <Link to="/admin/students" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; Oversee & Filter Students
-                                        </Link>
-                                        <Link to="/admin/teachers" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; Manage Faculty & Teachers
-                                        </Link>
-                                        <Link to="/admin/settings" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; System Settings & Preferences
-                                        </Link>
-                                        <Link to="/admin/help" className="list-group-item list-group-item-action py-3 fw-semibold">
-                                            &rarr; Administrator Help Guide
-                                        </Link>
+                            <div className="card shadow-sm border-0 rounded-4 bg-white hover-elevate h-100">
+                                <div className="card-body p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <h5 className="fw-bold text-dark mb-3">Quick Navigation</h5>
+                                        <div className="list-group list-group-flush rounded-3 overflow-hidden border border-light-subtle">
+                                            <Link to="/admin/students" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; Oversee & Filter Students
+                                            </Link>
+                                            <Link to="/admin/teachers" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; Manage Faculty & Teachers
+                                            </Link>
+                                            <Link to="/admin/settings" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; System Settings & Preferences
+                                            </Link>
+                                            <Link to="/admin/help" className="list-group-item list-group-item-action py-3 fw-semibold small text-secondary">
+                                                &rarr; Administrator Help Guide
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 pt-3 border-top text-muted small text-center">
+                                        BrightPath College Admin Control Hub
                                     </div>
                                 </div>
                             </div>

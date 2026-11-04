@@ -8,12 +8,15 @@ const EditStudent = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [teachers, setTeachers] = useState([]);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         age: "",
         gender: "Female",
         course: "Software Development",
+        teacherId: "",
+        teacherEmail: "",
     });
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -23,18 +26,26 @@ const EditStudent = () => {
     const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
     useEffect(() => {
-        fetch(`${API_ENDPOINTS.STUDENTS}/${id}`)
-            .then((res) => {
+        Promise.all([
+            fetch(`${API_ENDPOINTS.STUDENTS}/${id}`).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch student details.");
                 return res.json();
-            })
-            .then((data) => {
+            }),
+            fetch(API_ENDPOINTS.TEACHERS).then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch teachers.");
+                return res.json();
+            }),
+        ])
+            .then(([studentData, teachersData]) => {
+                setTeachers(teachersData);
                 setFormData({
-                    name: data.name || "",
-                    email: data.email || "",
-                    age: data.age || "",
-                    gender: data.gender || "Female",
-                    course: data.course || "Software Development",
+                    name: studentData.name || "",
+                    email: studentData.email || "",
+                    age: studentData.age || "",
+                    gender: studentData.gender || "Female",
+                    course: studentData.course || "Software Development",
+                    teacherId: studentData.teacherId || "",
+                    teacherEmail: studentData.teacherEmail || "",
                 });
                 setLoading(false);
             })
@@ -46,7 +57,20 @@ const EditStudent = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+
+        if (name === "course") {
+            // Reset teacher assignment if department/course changes
+            setFormData((prev) => ({ ...prev, course: value, teacherId: "", teacherEmail: "" }));
+        } else if (name === "teacherId") {
+            const selectedTeacher = teachers.find((t) => String(t.id) === String(value));
+            setFormData((prev) => ({
+                ...prev,
+                teacherId: value,
+                teacherEmail: selectedTeacher ? selectedTeacher.email : "",
+            }));
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleUpdateStudent = (e) => {
@@ -78,6 +102,10 @@ const EditStudent = () => {
                 setToast({ show: true, message: err.message, type: "danger" });
             });
     };
+
+    const availableTeachers = teachers.filter(
+        (t) => t.department?.toLowerCase() === formData.course.toLowerCase()
+    );
 
     return (
         <div className="container py-3">
@@ -164,6 +192,26 @@ const EditStudent = () => {
                                             <option value="Cybersecurity">Cybersecurity</option>
                                             <option value="Business IT">Business IT</option>
                                         </select>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="form-label small fw-semibold text-secondary">Assigned Instructor</label>
+                                        <select
+                                            name="teacherId"
+                                            className="form-select"
+                                            value={formData.teacherId}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">-- Unassigned / General --</option>
+                                            {availableTeachers.map((t) => (
+                                                <option key={t.id} value={t.id}>
+                                                    {t.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="form-text text-muted" style={{ fontSize: "0.75rem" }}>
+                                            Reassign this student to another instructor in the department.
+                                        </div>
                                     </div>
 
                                     <div className="d-flex gap-2">

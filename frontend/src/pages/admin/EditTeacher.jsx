@@ -8,10 +8,11 @@ const EditTeacher = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [originalEmail, setOriginalEmail] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        department: "",
+        department: "Software Development",
     });
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -30,8 +31,9 @@ const EditTeacher = () => {
                 setFormData({
                     name: data.name || "",
                     email: data.email || "",
-                    department: data.department || "",
+                    department: data.department || "Software Development",
                 });
+                setOriginalEmail(data.email || "");
                 setLoading(false);
             })
             .catch((err) => {
@@ -50,6 +52,7 @@ const EditTeacher = () => {
         setSubmitting(true);
         setError(null);
 
+        // 1. Update teacher record
         fetch(`${API_ENDPOINTS.TEACHERS}/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -60,7 +63,32 @@ const EditTeacher = () => {
                 return res.json();
             })
             .then(() => {
-                setToast({ show: true, message: "Teacher record updated successfully!", type: "success" });
+                // 2. Find and update corresponding user account in the users table
+                return fetch(API_ENDPOINTS.USERS);
+            })
+            .then((res) => res.json())
+            .then((users) => {
+                const matchingUser = users.find(
+                    (u) => u.email.toLowerCase() === originalEmail.toLowerCase()
+                );
+
+                if (matchingUser) {
+                    const updatedUserPayload = {
+                        ...matchingUser,
+                        fullName: formData.name,
+                        email: formData.email,
+                        department: formData.department,
+                    };
+
+                    return fetch(`${API_ENDPOINTS.USERS}/${matchingUser.id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updatedUserPayload),
+                    });
+                }
+            })
+            .then(() => {
+                setToast({ show: true, message: "Teacher record & login account updated successfully!", type: "success" });
                 setTimeout(() => navigate("/admin/teachers"), 1200);
             })
             .catch((err) => {
@@ -115,14 +143,19 @@ const EditTeacher = () => {
 
                                     <div className="mb-3">
                                         <label className="form-label small fw-semibold text-secondary">Department</label>
-                                        <input
-                                            type="text"
+                                        <select
                                             name="department"
-                                            className="form-control"
+                                            className="form-select"
                                             value={formData.department}
                                             onChange={handleInputChange}
                                             required
-                                        />
+                                        >
+                                            <option value="Software Development">Software Development</option>
+                                            <option value="Cybersecurity">Cybersecurity</option>
+                                            <option value="Data Analytics">Data Analytics</option>
+                                            <option value="Networking">Networking</option>
+                                            <option value="Business IT">Business IT</option>
+                                        </select>
                                     </div>
 
                                     <div className="d-flex gap-2">

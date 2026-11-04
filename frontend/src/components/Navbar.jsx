@@ -48,23 +48,14 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className="nav-item ms-lg-2">
               <NavLink
-                className={({ isActive }) => `nav-link nav-link-custom ${isActive ? "active" : ""}`}
+                className={({ isActive }) => `btn btn-light text-primary btn-sm fw-bold px-4 py-2 rounded-pill shadow-sm d-block text-center hover-elevate ${isActive ? "active" : ""}`}
                 to="/login"
                 onClick={closeNavbar}
               >
-                Login
+                Login &rarr;
               </NavLink>
-            </li>
-            <li className="nav-item ms-lg-2 mt-2 mt-lg-0 pb-2 pb-lg-0">
-              <Link
-                className="btn btn-light text-primary btn-sm fw-bold px-4 py-2 rounded-pill shadow-sm d-block text-center hover-elevate"
-                to="/register"
-                onClick={closeNavbar}
-              >
-                Sign Up &rarr;
-              </Link>
             </li>
           </ul>
         </div>

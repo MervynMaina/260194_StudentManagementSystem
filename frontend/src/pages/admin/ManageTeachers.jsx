@@ -10,11 +10,15 @@ const ManageTeachers = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6; // Number of items to display per page
+
     // Form state for adding a new teacher
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        department: "",
+        department: "Software Development",
     });
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -54,20 +58,37 @@ const ManageTeachers = () => {
         setSubmitting(true);
         setFormError(null);
 
+        // 1. Post to teachers resource
         fetch(API_ENDPOINTS.TEACHERS, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
         })
             .then((res) => {
-                if (!res.ok) throw new Error("Failed to add teacher.");
+                if (!res.ok) throw new Error("Failed to add teacher record.");
                 return res.json();
             })
             .then((newTeacher) => {
+                // 2. Also provision a corresponding login user account in the users resource
+                const newUserPayload = {
+                    fullName: formData.name,
+                    email: formData.email,
+                    password: "password123", // Default temporary password
+                    role: "teacher",
+                    department: formData.department,
+                };
+
+                return fetch(API_ENDPOINTS.USERS, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(newUserPayload),
+                }).then(() => newTeacher);
+            })
+            .then((newTeacher) => {
                 setTeachers((prev) => [...prev, newTeacher]);
-                setFormData({ name: "", email: "", department: "" });
+                setFormData({ name: "", email: "", department: "Software Development" });
                 setSubmitting(false);
-                setToast({ show: true, message: "Teacher record added successfully!", type: "success" });
+                setToast({ show: true, message: "Teacher record & portal login provisioned successfully!", type: "success" });
             })
             .catch((err) => {
                 setFormError(err.message);
@@ -76,16 +97,31 @@ const ManageTeachers = () => {
             });
     };
 
-    const handleDeleteTeacher = (id) => {
-        if (!window.confirm("Are you sure you want to delete this teacher record?")) return;
+    const handleDeleteTeacher = (teacher) => {
+        if (!window.confirm(`Are you sure you want to delete ${teacher.name}? This will also revoke their portal access.`)) return;
 
-        fetch(`${API_ENDPOINTS.TEACHERS}/${id}`, {
+        // 1. Delete from teachers resource
+        fetch(`${API_ENDPOINTS.TEACHERS}/${teacher.id}`, {
             method: "DELETE",
         })
             .then((res) => {
-                if (!res.ok) throw new Error("Failed to delete teacher.");
-                setTeachers((prev) => prev.filter((t) => t.id !== id));
-                setToast({ show: true, message: "Teacher record deleted successfully.", type: "danger" });
+                if (!res.ok) throw new Error("Failed to delete teacher record.");
+
+                // 2. Find and delete corresponding user account by email
+                return fetch(API_ENDPOINTS.USERS);
+            })
+            .then((res) => res.json())
+            .then((users) => {
+                const matchingUser = users.find((u) => u.email.toLowerCase() === teacher.email.toLowerCase());
+                if (matchingUser) {
+                    return fetch(`${API_ENDPOINTS.USERS}/${matchingUser.id}`, {
+                        method: "DELETE",
+                    });
+                }
+            })
+            .then(() => {
+                setTeachers((prev) => prev.filter((t) => t.id !== teacher.id));
+                setToast({ show: true, message: "Teacher record and portal account deleted.", type: "danger" });
             })
             .catch((err) => {
                 alert(err.message);
@@ -99,6 +135,17 @@ const ManageTeachers = () => {
             teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             teacher.department.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Reset pagination to page 1 whenever search query changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentTeachers = filteredTeachers.slice(indexOfFirstItem, indexOfLastItem);
 
     return (
         <div className="container py-3">
@@ -148,15 +195,19 @@ const ManageTeachers = () => {
 
                                 <div className="mb-3">
                                     <label className="form-label small fw-semibold text-secondary">Department</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         name="department"
-                                        className="form-control"
-                                        placeholder="Software Development"
+                                        className="form-select"
                                         value={formData.department}
                                         onChange={handleInputChange}
                                         required
-                                    />
+                                    >
+                                        <option value="Software Development">Software Development</option>
+                                        <option value="Cybersecurity">Cybersecurity</option>
+                                        <option value="Data Analytics">Data Analytics</option>
+                                        <option value="Networking">Networking</option>
+                                        <option value="Business IT">Business IT</option>
+                                    </select>
                                 </div>
 
                                 <button type="submit" className="btn btn-primary w-100 fw-semibold py-2" disabled={submitting}>
@@ -185,11 +236,10 @@ const ManageTeachers = () => {
 
                     {!loading && !error && (
                         <div className="card shadow-sm border-0 rounded-4 hover-elevate">
-                            <div className="card-body p-4">
-                                {/* Scrollable wrapper with max height and sticky header */}
-                                <div className="table-responsive" style={{ maxHeight: "480px", overflowY: "auto" }}>
+                            <div className="card-body p-4 d-flex flex-column justify-content-between" style={{ minHeight: "420px" }}>
+                                <div className="table-responsive">
                                     <table className="table table-hover align-middle mb-0">
-                                        <thead className="table-light sticky-top" style={{ zIndex: 1 }}>
+                                        <thead className="table-light">
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Department</th>
@@ -198,8 +248,8 @@ const ManageTeachers = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredTeachers.length > 0 ? (
-                                                filteredTeachers.map((teacher) => (
+                                            {currentTeachers.length > 0 ? (
+                                                currentTeachers.map((teacher) => (
                                                     <tr key={teacher.id}>
                                                         <td className="fw-semibold">{teacher.name}</td>
                                                         <td>
@@ -223,7 +273,7 @@ const ManageTeachers = () => {
                                                                     Edit
                                                                 </Link>
                                                                 <button
-                                                                    onClick={() => handleDeleteTeacher(teacher.id)}
+                                                                    onClick={() => handleDeleteTeacher(teacher)}
                                                                     className="btn btn-outline-danger btn-sm px-2 py-1"
                                                                 >
                                                                     Delete
@@ -242,6 +292,50 @@ const ManageTeachers = () => {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {/* Pagination Footer Controls */}
+                                {totalPages > 1 && (
+                                    <div className="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+                                        <small className="text-muted">
+                                            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTeachers.length)} of {filteredTeachers.length} entries
+                                        </small>
+                                        <nav aria-label="Teachers table pagination">
+                                            <ul className="pagination pagination-sm mb-0">
+                                                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                </li>
+                                                {[...Array(totalPages)].map((_, index) => {
+                                                    const pageNum = index + 1;
+                                                    return (
+                                                        <li key={pageNum} className={`page-item ${currentPage === pageNum ? "active" : ""}`}>
+                                                            <button
+                                                                className="page-link"
+                                                                onClick={() => setCurrentPage(pageNum)}
+                                                            >
+                                                                {pageNum}
+                                                            </button>
+                                                        </li>
+                                                    );
+                                                })}
+                                                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

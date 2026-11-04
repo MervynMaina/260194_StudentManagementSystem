@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_ENDPOINTS } from "../../config";
 import Toast from "../../components/Toast";
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("admin");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+
     // Toast state
     const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
@@ -24,18 +25,43 @@ const Login = () => {
             return;
         }
 
-        // Simulate login flow and navigate based on selected role
-        setTimeout(() => {
-            setLoading(false);
-            setToast({ show: true, message: `Successfully logged in as ${role === 'admin' ? 'Administrator' : 'Teacher'}!`, type: "success" });
-            setTimeout(() => {
-                if (role === "admin") {
-                    navigate("/admin");
-                } else {
-                    navigate("/teacher");
+        // Fetch users from mock database for authentication
+        fetch(API_ENDPOINTS.USERS)
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to connect to authentication server.");
+                return res.json();
+            })
+            .then((users) => {
+                const foundUser = users.find(
+                    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+                );
+
+                if (!foundUser) {
+                    throw new Error("Invalid email or password. Please check your credentials.");
                 }
-            }, 1000);
-        }, 800);
+
+                // Save user session to localStorage
+                localStorage.setItem("user", JSON.stringify(foundUser));
+
+                setLoading(false);
+                setToast({
+                    show: true,
+                    message: `Successfully authenticated as ${foundUser.fullName}!`,
+                    type: "success"
+                });
+
+                setTimeout(() => {
+                    if (foundUser.role === "admin") {
+                        navigate("/admin");
+                    } else {
+                        navigate("/teacher");
+                    }
+                }, 1000);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
     };
 
     return (
@@ -45,8 +71,8 @@ const Login = () => {
                     <div className="card shadow-sm border-0 rounded-4 overflow-hidden hover-elevate">
                         <div className="bg-primary p-4 text-white text-center position-relative">
                             <span className="badge bg-white text-primary fw-bold mb-2 px-3 py-1 rounded-pill">Secure Authentication</span>
-                            <h3 className="mb-1 fw-bold">Portal Login</h3>
-                            <p className="mb-0 text-white-50 small">Sign in to access your administrative dashboard</p>
+                            <h3 className="mb-1 fw-bold">Staff Portal Login</h3>
+                            <p className="mb-0 text-white-50 small">Enter your credentials to access your dashboard</p>
                         </div>
 
                         <div className="card-body p-4 p-md-5 bg-white">
@@ -57,21 +83,6 @@ const Login = () => {
                             )}
 
                             <form onSubmit={handleLogin}>
-                                <div className="mb-3">
-                                    <label htmlFor="roleSelect" className="form-label fw-semibold text-secondary small">
-                                        Select Role
-                                    </label>
-                                    <select
-                                        id="roleSelect"
-                                        className="form-select py-2 rounded-3"
-                                        value={role}
-                                        onChange={(e) => setRole(e.target.value)}
-                                    >
-                                        <option value="admin">Administrator Portal</option>
-                                        <option value="teacher">Teacher Portal</option>
-                                    </select>
-                                </div>
-
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label fw-semibold text-secondary small">
                                         Email Address
@@ -91,15 +102,25 @@ const Login = () => {
                                     <label htmlFor="password" className="form-label fw-semibold text-secondary small">
                                         Password
                                     </label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        className="form-control py-2 rounded-3"
-                                        placeholder="••••••••"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
+                                    <div className="input-group">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            id="password"
+                                            className="form-control py-2 rounded-start-3 border-end-0"
+                                            placeholder="••••••••"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary border-start-0 rounded-end-3 px-3 text-secondary small fw-semibold"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            tabIndex="-1"
+                                        >
+                                            {showPassword ? "Hide" : "Show"}
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <button
@@ -110,27 +131,23 @@ const Login = () => {
                                     {loading ? (
                                         <>
                                             <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                            Signing In...
+                                            Verifying Credentials...
                                         </>
                                     ) : (
-                                        "Sign In"
+                                        "Sign In →"
                                     )}
                                 </button>
-
-                                <div className="text-center small text-secondary">
-                                    Don't have an account? <Link to="/register" className="text-primary text-decoration-none fw-semibold">Sign Up</Link>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <Toast 
-                show={toast.show} 
-                message={toast.message} 
-                type={toast.type} 
-                onClose={() => setToast((prev) => ({ ...prev, show: false }))} 
+            <Toast
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast((prev) => ({ ...prev, show: false }))}
             />
         </div>
     );

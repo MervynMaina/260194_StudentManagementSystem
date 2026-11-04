@@ -9,13 +9,9 @@ import TeacherLayout from "./layouts/TeacherLayout";
 
 // Public Pages
 import Home from "./pages/Home";
-import Students from "./pages/Students";
-import StudentDetails from "./pages/StudentDetails";
-import AddStudent from "./pages/AddStudent";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -26,6 +22,7 @@ import TeacherDetails from "./pages/TeacherDetails";
 import EditTeacher from "./pages/admin/EditTeacher";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminHelp from "./pages/admin/AdminHelp";
+import RegisterStaff from "./pages/admin/RegisterStaff"; // Newly added admin provisioning page
 
 // Teacher Pages
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
@@ -33,19 +30,18 @@ import TeacherStudents from "./pages/teacher/TeacherStudents";
 import TeacherSettings from "./pages/teacher/TeacherSettings";
 import TeacherHelp from "./pages/teacher/TeacherHelp";
 
+// Shared Detail Pages (if applicable)
+import StudentDetails from "./pages/StudentDetails";
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
+        {/* Public Routes (Removed public register/directory routes) */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/students/:id" element={<StudentDetails />} />
-          <Route path="/add-student" element={<AddStudent />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
         </Route>
 
         {/* Admin Routes */}
@@ -57,6 +53,7 @@ function App() {
           <Route path="teachers" element={<ManageTeachers />} />
           <Route path="teachers/:id" element={<TeacherDetails />} />
           <Route path="teachers/edit/:id" element={<EditTeacher />} />
+          <Route path="register-staff" element={<RegisterStaff />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="help" element={<AdminHelp />} />
         </Route>

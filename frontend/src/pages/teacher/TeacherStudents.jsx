@@ -11,12 +11,22 @@ const TeacherStudents = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCourse, setSelectedCourse] = useState("");
 
+    // Retrieve logged-in teacher details from localStorage
+    const currentUser = JSON.parse(localStorage.getItem("user")) || {};
+    const teacherDepartment = currentUser.department || "Software Development";
+    const teacherId = currentUser.id;
+    const teacherEmail = currentUser.email;
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6; // Number of items per page
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         age: "",
         gender: "Female",
-        course: "Software Development",
+        course: teacherDepartment, // Default to teacher's department
     });
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -32,7 +42,18 @@ const TeacherStudents = () => {
                 return res.json();
             })
             .then((data) => {
-                setStudents(data);
+                // Filter students: must match teacher's department AND be assigned to this specific teacher (or fallback if unassigned)
+                const assignedStudents = data.filter((student) => {
+                    const matchesDept = student.course.toLowerCase() === teacherDepartment.toLowerCase();
+                    const matchesTeacher =
+                        student.teacherId === teacherId ||
+                        student.teacherEmail?.toLowerCase() === teacherEmail?.toLowerCase() ||
+                        (!student.teacherId && !student.teacherEmail); // Fallback for unassigned legacy records
+
+                    return matchesDept && matchesTeacher;
+                });
+
+                setStudents(assignedStudents);
                 setLoading(false);
             })
             .catch((err) => {
@@ -43,7 +64,7 @@ const TeacherStudents = () => {
 
     useEffect(() => {
         fetchStudents();
-    }, []);
+    }, [teacherDepartment, teacherId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -58,6 +79,9 @@ const TeacherStudents = () => {
         const payload = {
             ...formData,
             age: Number(formData.age),
+            course: teacherDepartment, // Ensure course strictly matches teacher's department
+            teacherId: teacherId,     // Stamp with current teacher's ID
+            teacherEmail: teacherEmail, // Stamp with current teacher's email for relational lookup
         };
 
         fetch(API_ENDPOINTS.STUDENTS, {
@@ -71,9 +95,9 @@ const TeacherStudents = () => {
             })
             .then((newStudent) => {
                 setStudents((prev) => [...prev, newStudent]);
-                setFormData({ name: "", email: "", age: "", gender: "Female", course: "Software Development" });
+                setFormData({ name: "", email: "", age: "", gender: "Female", course: teacherDepartment });
                 setSubmitting(false);
-                setToast({ show: true, message: "Student record added successfully!", type: "success" });
+                setToast({ show: true, message: `Student added to your roster successfully!`, type: "success" });
             })
             .catch((err) => {
                 setFormError(err.message);
@@ -107,6 +131,17 @@ const TeacherStudents = () => {
         return matchesSearch && matchesCourse;
     });
 
+    // Reset pagination to page 1 whenever filters change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, selectedCourse]);
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentStudents = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+
     return (
         <div className="container py-3">
             <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
@@ -114,7 +149,7 @@ const TeacherStudents = () => {
                     <Link to="/teacher" className="btn btn-outline-secondary btn-sm mb-2">
                         &larr; Back to Dashboard
                     </Link>
-                    <h2 className="fw-bold text-dark mb-0">Student Record Management</h2>
+                    <h2 className="fw-bold text-dark mb-0">My Student Roster ({teacherDepartment})</h2>
                 </div>
             </div>
 
@@ -123,7 +158,7 @@ const TeacherStudents = () => {
                 <div className="col-lg-4 mb-4">
                     <div className="card shadow-sm border-0 rounded-4 hover-elevate">
                         <div className="card-body p-4">
-                            <h5 className="fw-bold text-dark mb-3">Add Student Record</h5>
+                            <h5 className="fw-bold text-dark mb-3">Add Student to Roster</h5>
                             {formError && <div className="alert alert-danger py-2 small">{formError}</div>}
 
                             <form onSubmit={handleAddStudent}>
@@ -181,19 +216,17 @@ const TeacherStudents = () => {
                                 </div>
 
                                 <div className="mb-3">
-                                    <label className="form-label small fw-semibold text-secondary">Course</label>
-                                    <select
-                                        name="course"
-                                        className="form-select"
-                                        value={formData.course}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="Software Development">Software Development</option>
-                                        <option value="Networking">Networking</option>
-                                        <option value="Data Analytics">Data Analytics</option>
-                                        <option value="Cybersecurity">Cybersecurity</option>
-                                        <option value="Business IT">Business IT</option>
-                                    </select>
+                                    <label className="form-label small fw-semibold text-secondary">Assigned Course</label>
+                                    <input
+                                        type="text"
+                                        className="form-control bg-light"
+                                        value={teacherDepartment}
+                                        disabled
+                                        readOnly
+                                    />
+                                    <div className="form-text text-muted" style={{ fontSize: "0.75rem" }}>
+                                        Locked to your department allocation.
+                                    </div>
                                 </div>
 
                                 <button type="submit" className="btn btn-success w-100 fw-semibold py-2" disabled={submitting}>
@@ -209,28 +242,14 @@ const TeacherStudents = () => {
                     <div className="card shadow-sm border-0 rounded-4 mb-4 hover-elevate">
                         <div className="card-body p-3">
                             <div className="row g-2">
-                                <div className="col-md-7">
+                                <div className="col-md-12">
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Search students..."
+                                        placeholder="Search your students..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                </div>
-                                <div className="col-md-5">
-                                    <select
-                                        className="form-select"
-                                        value={selectedCourse}
-                                        onChange={(e) => setSelectedCourse(e.target.value)}
-                                    >
-                                        <option value="">All Courses</option>
-                                        <option value="Software Development">Software Development</option>
-                                        <option value="Networking">Networking</option>
-                                        <option value="Data Analytics">Data Analytics</option>
-                                        <option value="Cybersecurity">Cybersecurity</option>
-                                        <option value="Business IT">Business IT</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -240,10 +259,10 @@ const TeacherStudents = () => {
 
                     {!loading && !error && (
                         <div className="card shadow-sm border-0 rounded-4 hover-elevate">
-                            <div className="card-body p-4">
-                                <div className="table-responsive" style={{ maxHeight: "480px", overflowY: "auto" }}>
+                            <div className="card-body p-4 d-flex flex-column justify-content-between" style={{ minHeight: "420px" }}>
+                                <div className="table-responsive">
                                     <table className="table table-hover align-middle mb-0">
-                                        <thead className="table-light sticky-top" style={{ zIndex: 1 }}>
+                                        <thead className="table-light">
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Course</th>
@@ -252,8 +271,8 @@ const TeacherStudents = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredStudents.length > 0 ? (
-                                                filteredStudents.map((student) => (
+                                            {currentStudents.length > 0 ? (
+                                                currentStudents.map((student) => (
                                                     <tr key={student.id}>
                                                         <td>
                                                             <div className="fw-semibold">{student.name}</div>
@@ -294,13 +313,57 @@ const TeacherStudents = () => {
                                             ) : (
                                                 <tr>
                                                     <td colSpan="4" className="text-center text-muted py-4">
-                                                        No student records found matching your filter.
+                                                        No student records assigned to your roster.
                                                     </td>
                                                 </tr>
                                             )}
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {/* Pagination Footer Controls */}
+                                {totalPages > 1 && (
+                                    <div className="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+                                        <small className="text-muted">
+                                            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredStudents.length)} of {filteredStudents.length} entries
+                                        </small>
+                                        <nav aria-label="Teacher students table pagination">
+                                            <ul className="pagination pagination-sm mb-0">
+                                                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                </li>
+                                                {[...Array(totalPages)].map((_, index) => {
+                                                    const pageNum = index + 1;
+                                                    return (
+                                                        <li key={pageNum} className={`page-item ${currentPage === pageNum ? "active" : ""}`}>
+                                                            <button
+                                                                className="page-link"
+                                                                onClick={() => setCurrentPage(pageNum)}
+                                                            >
+                                                                {pageNum}
+                                                            </button>
+                                                        </li>
+                                                    );
+                                                })}
+                                                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
