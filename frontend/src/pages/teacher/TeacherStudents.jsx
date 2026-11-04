@@ -241,15 +241,27 @@ const TeacherStudents = () => {
                 <div className="col-lg-8">
                     <div className="card shadow-sm border-0 rounded-4 mb-4 hover-elevate">
                         <div className="card-body p-3">
-                            <div className="row g-2">
-                                <div className="col-md-12">
+                            <div className="row g-2 align-items-center">
+                                <div className="col-md-10">
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Search your students..."
+                                        placeholder="Search your students by name or email..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
+                                </div>
+                                <div className="col-md-2">
+                                    <button
+                                        className="btn btn-outline-secondary w-100"
+                                        onClick={() => {
+                                            setSearchTerm("");
+                                            setSelectedCourse("");
+                                        }}
+                                        title="Clear search and filter"
+                                    >
+                                        Clear
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -313,7 +325,7 @@ const TeacherStudents = () => {
                                             ) : (
                                                 <tr>
                                                     <td colSpan="4" className="text-center text-muted py-4">
-                                                        No student records assigned to your roster.
+                                                        No student records assigned to your roster matching your search.
                                                     </td>
                                                 </tr>
                                             )}

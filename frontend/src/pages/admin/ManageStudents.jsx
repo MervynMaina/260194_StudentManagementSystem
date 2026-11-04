@@ -279,8 +279,8 @@ const ManageStudents = () => {
                 <div className="col-lg-8">
                     <div className="card shadow-sm border-0 rounded-4 mb-4 hover-elevate">
                         <div className="card-body p-3">
-                            <div className="row g-2">
-                                <div className="col-md-7">
+                            <div className="row g-2 align-items-center">
+                                <div className="col-md-6">
                                     <input
                                         type="text"
                                         className="form-control"
@@ -289,7 +289,7 @@ const ManageStudents = () => {
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
                                 </div>
-                                <div className="col-md-5">
+                                <div className="col-md-4">
                                     <select
                                         className="form-select"
                                         value={selectedCourse}
@@ -302,6 +302,18 @@ const ManageStudents = () => {
                                         <option value="Cybersecurity">Cybersecurity</option>
                                         <option value="Business IT">Business IT</option>
                                     </select>
+                                </div>
+                                <div className="col-md-2">
+                                    <button
+                                        className="btn btn-outline-secondary w-100"
+                                        onClick={() => {
+                                            setSearchTerm("");
+                                            setSelectedCourse("");
+                                        }}
+                                        title="Clear search and filters"
+                                    >
+                                        Clear
+                                    </button>
                                 </div>
                             </div>
                         </div>
