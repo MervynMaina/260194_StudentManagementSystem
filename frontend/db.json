@@ -1,61 +1,976 @@
 {
   "students": [
-    { "id": "1", "name": "Amina Hassan", "email": "amina.hassan@brightpath.edu", "age": 19, "gender": "Female", "course": "Software Development", "teacherId": "1", "teacherEmail": "james.mwangi@brightpath.edu" },
-    { "id": "2", "name": "Brian Otieno", "email": "brian.otieno@brightpath.edu", "age": 21, "gender": "Male", "course": "Networking", "teacherId": "4", "teacherEmail": "mark.kariuki@brightpath.edu" },
-    { "id": "3", "name": "Carla Mendes", "email": "carla.mendes@brightpath.edu", "age": 20, "gender": "Female", "course": "Data Analytics", "teacherId": "3", "teacherEmail": "eunice.kiprono@brightpath.edu" },
-    { "id": "4", "name": "David Kimani", "email": "david.kimani@brightpath.edu", "age": 22, "gender": "Male", "course": "Cybersecurity", "teacherId": "2", "teacherEmail": "sarah.ouma@brightpath.edu" },
-    { "id": "5", "name": "Esther Wanjiru", "email": "esther.wanjiru@brightpath.edu", "age": 18, "gender": "Female", "course": "Software Development", "teacherId": "6", "teacherEmail": "victor.koech@brightpath.edu" },
-    { "id": "6", "name": "Farid Rahman", "email": "farid.rahman@brightpath.edu", "age": 23, "gender": "Male", "course": "Data Analytics", "teacherId": "10", "teacherEmail": "brian.kiprop@brightpath.edu" },
-    { "id": "7", "name": "Grace Achieng", "email": "grace.achieng@brightpath.edu", "age": 20, "gender": "Female", "course": "Data Analytics", "teacherId": "3", "teacherEmail": "eunice.kiprono@brightpath.edu" },
-    { "id": "8", "name": "Hassan Ali", "email": "hassan.ali@brightpath.edu", "age": 24, "gender": "Male", "course": "Networking", "teacherId": "9", "teacherEmail": "faith.cheptoo@brightpath.edu" },
-    { "id": "9", "name": "Irene Mutua", "email": "irene.mutua@brightpath.edu", "age": 19, "gender": "Female", "course": "Business IT", "teacherId": "5", "teacherEmail": "beatrice.wamalwa@brightpath.edu" },
-    { "id": "10", "name": "Joseph Njoroge", "email": "joseph.njoroge@brightpath.edu", "age": 21, "gender": "Male", "course": "Cybersecurity", "teacherId": "7", "teacherEmail": "amina.sheikh@brightpath.edu" },
-    { "id": "11", "name": "Kevin Chege", "email": "kevin.chege@brightpath.edu", "age": 20, "gender": "Male", "course": "Software Development", "teacherId": "1", "teacherEmail": "james.mwangi@brightpath.edu" },
-    { "id": "12", "name": "Lilian Akinyi", "email": "lilian.akinyi@brightpath.edu", "age": 22, "gender": "Female", "course": "Data Analytics", "teacherId": "10", "teacherEmail": "brian.kiprop@brightpath.edu" },
-    { "id": "13", "name": "Mohammed Abdi", "email": "mohammed.abdi@brightpath.edu", "age": 23, "gender": "Male", "course": "Cybersecurity", "teacherId": "2", "teacherEmail": "sarah.ouma@brightpath.edu" },
-    { "id": "14", "name": "Natalie Njeri", "email": "natalie.njeri@brightpath.edu", "age": 19, "gender": "Female", "course": "Networking", "teacherId": "4", "teacherEmail": "mark.kariuki@brightpath.edu" },
-    { "id": "15", "name": "Oscar Omondi", "email": "oscar.omondi@brightpath.edu", "age": 21, "gender": "Male", "course": "Business IT", "teacherId": "8", "teacherEmail": "collins.otieno@brightpath.edu" },
-    { "id": "16", "name": "Patricia Wangari", "email": "patricia.wangari@brightpath.edu", "age": 20, "gender": "Female", "course": "Software Development", "teacherId": "6", "teacherEmail": "victor.koech@brightpath.edu" },
-    { "id": "17", "name": "Quentin Juma", "email": "quentin.juma@brightpath.edu", "age": 22, "gender": "Male", "course": "Data Analytics", "teacherId": "3", "teacherEmail": "eunice.kiprono@brightpath.edu" },
-    { "id": "18", "name": "Rachel Nduta", "email": "rachel.nduta@brightpath.edu", "age": 18, "gender": "Female", "course": "Cybersecurity", "teacherId": "7", "teacherEmail": "amina.sheikh@brightpath.edu" },
-    { "id": "19", "name": "Samuel Kiprop", "email": "samuel.kiprop@brightpath.edu", "age": 24, "gender": "Male", "course": "Networking", "teacherId": "9", "teacherEmail": "faith.cheptoo@brightpath.edu" },
-    { "id": "20", "name": "Tatiana Moraa", "email": "tatiana.moraa@brightpath.edu", "age": 20, "gender": "Female", "course": "Business IT", "teacherId": "5", "teacherEmail": "beatrice.wamalwa@brightpath.edu" },
-    { "id": "21", "name": "Victor Maina", "email": "victor.maina@brightpath.edu", "age": 21, "gender": "Male", "course": "Software Development", "teacherId": "1", "teacherEmail": "james.mwangi@brightpath.edu" },
-    { "id": "22", "name": "Winnie Awuor", "email": "winnie.awuor@brightpath.edu", "age": 20, "gender": "Female", "course": "Software Development", "teacherId": "6", "teacherEmail": "victor.koech@brightpath.edu" },
-    { "id": "23", "name": "Xavier Ochieng", "email": "xavier.ochieng@brightpath.edu", "age": 22, "gender": "Male", "course": "Cybersecurity", "teacherId": "2", "teacherEmail": "sarah.ouma@brightpath.edu" },
-    { "id": "24", "name": "Yvonne Chepkemoi", "email": "yvonne.chepkemoi@brightpath.edu", "age": 19, "gender": "Female", "course": "Data Analytics", "teacherId": "10", "teacherEmail": "brian.kiprop@brightpath.edu" },
-    { "id": "25", "name": "Zachary Kamau", "email": "zachary.kamau@brightpath.edu", "age": 23, "gender": "Male", "course": "Networking", "teacherId": "4", "teacherEmail": "mark.kariuki@brightpath.edu" },
-    { "id": "26", "name": "Abigail Mutua", "email": "abigail.mutua@brightpath.edu", "age": 19, "gender": "Female", "course": "Business IT", "teacherId": "8", "teacherEmail": "collins.otieno@brightpath.edu" },
-    { "id": "27", "name": "Baraka Kalu", "email": "baraka.kalu@brightpath.edu", "age": 21, "gender": "Male", "course": "Software Development", "teacherId": "1", "teacherEmail": "james.mwangi@brightpath.edu" },
-    { "id": "28", "name": "Cynthia Chebet", "email": "cynthia.chebet@brightpath.edu", "age": 20, "gender": "Female", "course": "Cybersecurity", "teacherId": "7", "teacherEmail": "amina.sheikh@brightpath.edu" },
-    { "id": "29", "name": "Dennis Mbuvi", "email": "dennis.mbuvi@brightpath.edu", "age": 22, "gender": "Male", "course": "Networking", "teacherId": "9", "teacherEmail": "faith.cheptoo@brightpath.edu" },
-    { "id": "30", "name": "Faith Nyambura", "email": "faith.nyambura@brightpath.edu", "age": 18, "gender": "Female", "course": "Data Analytics", "teacherId": "3", "teacherEmail": "eunice.kiprono@brightpath.edu" }
+    {
+      "id": "1",
+      "name": "Amina Hassan",
+      "email": "amina.hassan@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Software Development",
+      "teacherId": "1",
+      "teacherEmail": "james.mwangi@brightpath.edu",
+      "performance": {
+        "attendance": 92,
+        "grade": "A",
+        "score": 88,
+        "assignments": [
+          {
+            "title": "Assignment 1: React Basics",
+            "score": 90,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project: REST API",
+            "score": 86,
+            "maxScore": 100
+          }
+        ],
+        "notes": "Good stuff"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Brian Otieno",
+      "email": "brian.otieno@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Networking",
+      "teacherId": "4",
+      "teacherEmail": "mark.kariuki@brightpath.edu",
+      "performance": {
+        "attendance": 85,
+        "grade": "B",
+        "score": 75,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 78,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam: Subnetting",
+            "score": 72,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "name": "Carla Mendes",
+      "email": "carla.mendes@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Data Analytics",
+      "teacherId": "3",
+      "teacherEmail": "eunice.kiprono@brightpath.edu",
+      "performance": {
+        "attendance": 96,
+        "grade": "A",
+        "score": 92,
+        "assignments": [
+          {
+            "title": "Assignment 1: Pandas Cleaning",
+            "score": 95,
+            "maxScore": 100
+          },
+          {
+            "title": "Visualization Project: Tableau",
+            "score": 89,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "name": "David Kimani",
+      "email": "david.kimani@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Cybersecurity",
+      "teacherId": "2",
+      "teacherEmail": "sarah.ouma@brightpath.edu",
+      "performance": {
+        "attendance": 88,
+        "grade": "B",
+        "score": 78,
+        "assignments": [
+          {
+            "title": "Lab 1: Wireshark Analysis",
+            "score": 80,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 76,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "name": "Esther Wanjiru",
+      "email": "esther.wanjiru@brightpath.edu",
+      "age": 18,
+      "gender": "Female",
+      "course": "Software Development",
+      "teacherId": "6",
+      "teacherEmail": "victor.koech@brightpath.edu",
+      "performance": {
+        "attendance": 90,
+        "grade": "A",
+        "score": 84,
+        "assignments": [
+          {
+            "title": "Assignment 1: HTML/CSS",
+            "score": 88,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 80,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "name": "Farid Rahman",
+      "email": "farid.rahman@brightpath.edu",
+      "age": 23,
+      "gender": "Male",
+      "course": "Data Analytics",
+      "teacherId": "10",
+      "teacherEmail": "brian.kiprop@brightpath.edu",
+      "performance": {
+        "attendance": 82,
+        "grade": "C",
+        "score": 68,
+        "assignments": [
+          {
+            "title": "Assignment 1: SQL Queries",
+            "score": 70,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 66,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "name": "Grace Achieng",
+      "email": "grace.achieng@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Data Analytics",
+      "teacherId": "3",
+      "teacherEmail": "eunice.kiprono@brightpath.edu",
+      "performance": {
+        "attendance": 94,
+        "grade": "A",
+        "score": 90,
+        "assignments": [
+          {
+            "title": "Assignment 1: Pandas Cleaning",
+            "score": 92,
+            "maxScore": 100
+          },
+          {
+            "title": "Visualization Project: Tableau",
+            "score": 88,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "8",
+      "name": "Hassan Ali",
+      "email": "hassan.ali@brightpath.edu",
+      "age": 24,
+      "gender": "Male",
+      "course": "Networking",
+      "teacherId": "9",
+      "teacherEmail": "faith.cheptoo@brightpath.edu",
+      "performance": {
+        "attendance": 80,
+        "grade": "C",
+        "score": 65,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 68,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam",
+            "score": 62,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "9",
+      "name": "Irene Mutua",
+      "email": "irene.mutua@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Business IT",
+      "teacherId": "5",
+      "teacherEmail": "beatrice.wamalwa@brightpath.edu",
+      "performance": {
+        "attendance": 95,
+        "grade": "A",
+        "score": 91,
+        "assignments": [
+          {
+            "title": "Assignment 1: ERP Systems",
+            "score": 93,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Case Study",
+            "score": 89,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "10",
+      "name": "Joseph Njoroge",
+      "email": "joseph.njoroge@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Cybersecurity",
+      "teacherId": "7",
+      "teacherEmail": "amina.sheikh@brightpath.edu",
+      "performance": {
+        "attendance": 89,
+        "grade": "B",
+        "score": 79,
+        "assignments": [
+          {
+            "title": "Lab 1: Firewall Setup",
+            "score": 82,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 76,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "11",
+      "name": "Kevin Chege",
+      "email": "kevin.chege@brightpath.edu",
+      "age": 20,
+      "gender": "Male",
+      "course": "Software Development",
+      "teacherId": "1",
+      "teacherEmail": "james.mwangi@brightpath.edu",
+      "performance": {
+        "attendance": 87,
+        "grade": "B",
+        "score": 77,
+        "assignments": [
+          {
+            "title": "Assignment 1: React Basics",
+            "score": 75,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 79,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "12",
+      "name": "Lilian Akinyi",
+      "email": "lilian.akinyi@brightpath.edu",
+      "age": 22,
+      "gender": "Female",
+      "course": "Data Analytics",
+      "teacherId": "10",
+      "teacherEmail": "brian.kiprop@brightpath.edu",
+      "performance": {
+        "attendance": 91,
+        "grade": "B",
+        "score": 82,
+        "assignments": [
+          {
+            "title": "Assignment 1: SQL Queries",
+            "score": 85,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 79,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "13",
+      "name": "Mohammed Abdi",
+      "email": "mohammed.abdi@brightpath.edu",
+      "age": 23,
+      "gender": "Male",
+      "course": "Cybersecurity",
+      "teacherId": "2",
+      "teacherEmail": "sarah.ouma@brightpath.edu",
+      "performance": {
+        "attendance": 90,
+        "grade": "A",
+        "score": 85,
+        "assignments": [
+          {
+            "title": "Lab 1: Wireshark Analysis",
+            "score": 88,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 82,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "14",
+      "name": "Natalie Njeri",
+      "email": "natalie.njeri@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Networking",
+      "teacherId": "4",
+      "teacherEmail": "mark.kariuki@brightpath.edu",
+      "performance": {
+        "attendance": 93,
+        "grade": "A",
+        "score": 86,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 85,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam",
+            "score": 87,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "15",
+      "name": "Oscar Omondi",
+      "email": "oscar.omondi@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Business IT",
+      "teacherId": "8",
+      "teacherEmail": "collins.otieno@brightpath.edu",
+      "performance": {
+        "attendance": 84,
+        "grade": "B",
+        "score": 74,
+        "assignments": [
+          {
+            "title": "Assignment 1: ERP Systems",
+            "score": 76,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Case Study",
+            "score": 72,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "16",
+      "name": "Patricia Wangari",
+      "email": "patricia.wangari@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Software Development",
+      "teacherId": "6",
+      "teacherEmail": "victor.koech@brightpath.edu",
+      "performance": {
+        "attendance": 98,
+        "grade": "A",
+        "score": 94,
+        "assignments": [
+          {
+            "title": "Assignment 1: HTML/CSS",
+            "score": 96,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 92,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "17",
+      "name": "Quentin Juma",
+      "email": "quentin.juma@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Data Analytics",
+      "teacherId": "3",
+      "teacherEmail": "eunice.kiprono@brightpath.edu",
+      "performance": {
+        "attendance": 86,
+        "grade": "B",
+        "score": 76,
+        "assignments": [
+          {
+            "title": "Assignment 1: Pandas Cleaning",
+            "score": 78,
+            "maxScore": 100
+          },
+          {
+            "title": "Visualization Project",
+            "score": 74,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "18",
+      "name": "Rachel Nduta",
+      "email": "rachel.nduta@brightpath.edu",
+      "age": 18,
+      "gender": "Female",
+      "course": "Cybersecurity",
+      "teacherId": "7",
+      "teacherEmail": "amina.sheikh@brightpath.edu",
+      "performance": {
+        "attendance": 95,
+        "grade": "A",
+        "score": 89,
+        "assignments": [
+          {
+            "title": "Lab 1: Firewall Setup",
+            "score": 91,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 87,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "19",
+      "name": "Samuel Kiprop",
+      "email": "samuel.kiprop@brightpath.edu",
+      "age": 24,
+      "gender": "Male",
+      "course": "Networking",
+      "teacherId": "9",
+      "teacherEmail": "faith.cheptoo@brightpath.edu",
+      "performance": {
+        "attendance": 83,
+        "grade": "C",
+        "score": 70,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 72,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam",
+            "score": 68,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "20",
+      "name": "Tatiana Moraa",
+      "email": "tatiana.moraa@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Business IT",
+      "teacherId": "5",
+      "teacherEmail": "beatrice.wamalwa@brightpath.edu",
+      "performance": {
+        "attendance": 92,
+        "grade": "A",
+        "score": 87,
+        "assignments": [
+          {
+            "title": "Assignment 1: ERP Systems",
+            "score": 89,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Case Study",
+            "score": 85,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "21",
+      "name": "Victor Maina",
+      "email": "victor.maina@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Software Development",
+      "teacherId": "1",
+      "teacherEmail": "james.mwangi@brightpath.edu",
+      "performance": {
+        "attendance": 88,
+        "grade": "B",
+        "score": 80,
+        "assignments": [
+          {
+            "title": "Assignment 1: React Basics",
+            "score": 82,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 78,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "22",
+      "name": "Winnie Awuor",
+      "email": "winnie.awuor@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Software Development",
+      "teacherId": "6",
+      "teacherEmail": "victor.koech@brightpath.edu",
+      "performance": {
+        "attendance": 94,
+        "grade": "A",
+        "score": 90,
+        "assignments": [
+          {
+            "title": "Assignment 1: HTML/CSS",
+            "score": 92,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 88,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "23",
+      "name": "Xavier Ochieng",
+      "email": "xavier.ochieng@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Cybersecurity",
+      "teacherId": "2",
+      "teacherEmail": "sarah.ouma@brightpath.edu",
+      "performance": {
+        "attendance": 85,
+        "grade": "B",
+        "score": 74,
+        "assignments": [
+          {
+            "title": "Lab 1: Wireshark Analysis",
+            "score": 77,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 71,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "24",
+      "name": "Yvonne Chepkemoi",
+      "email": "yvonne.chepkemoi@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Data Analytics",
+      "teacherId": "10",
+      "teacherEmail": "brian.kiprop@brightpath.edu",
+      "performance": {
+        "attendance": 96,
+        "grade": "A",
+        "score": 93,
+        "assignments": [
+          {
+            "title": "Assignment 1: SQL Queries",
+            "score": 95,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 91,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "25",
+      "name": "Zachary Kamau",
+      "email": "zachary.kamau@brightpath.edu",
+      "age": 23,
+      "gender": "Male",
+      "course": "Networking",
+      "teacherId": "4",
+      "teacherEmail": "mark.kariuki@brightpath.edu",
+      "performance": {
+        "attendance": 81,
+        "grade": "C",
+        "score": 67,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 70,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam",
+            "score": 64,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "26",
+      "name": "Abigail Mutua",
+      "email": "abigail.mutua@brightpath.edu",
+      "age": 19,
+      "gender": "Female",
+      "course": "Business IT",
+      "teacherId": "8",
+      "teacherEmail": "collins.otieno@brightpath.edu",
+      "performance": {
+        "attendance": 90,
+        "grade": "A",
+        "score": 85,
+        "assignments": [
+          {
+            "title": "Assignment 1: ERP Systems",
+            "score": 88,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Case Study",
+            "score": 82,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "27",
+      "name": "Baraka Kalu",
+      "email": "baraka.kalu@brightpath.edu",
+      "age": 21,
+      "gender": "Male",
+      "course": "Software Development",
+      "teacherId": "1",
+      "teacherEmail": "james.mwangi@brightpath.edu",
+      "performance": {
+        "attendance": 89,
+        "grade": "B",
+        "score": 81,
+        "assignments": [
+          {
+            "title": "Assignment 1: React Basics",
+            "score": 83,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Project",
+            "score": 79,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "28",
+      "name": "Cynthia Chebet",
+      "email": "cynthia.chebet@brightpath.edu",
+      "age": 20,
+      "gender": "Female",
+      "course": "Cybersecurity",
+      "teacherId": "7",
+      "teacherEmail": "amina.sheikh@brightpath.edu",
+      "performance": {
+        "attendance": 97,
+        "grade": "A",
+        "score": 95,
+        "assignments": [
+          {
+            "title": "Lab 1: Firewall Setup",
+            "score": 96,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Assessment",
+            "score": 94,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "29",
+      "name": "Dennis Mbuvi",
+      "email": "dennis.mbuvi@brightpath.edu",
+      "age": 22,
+      "gender": "Male",
+      "course": "Networking",
+      "teacherId": "9",
+      "teacherEmail": "faith.cheptoo@brightpath.edu",
+      "performance": {
+        "attendance": 86,
+        "grade": "B",
+        "score": 75,
+        "assignments": [
+          {
+            "title": "Lab 1: Router Configuration",
+            "score": 78,
+            "maxScore": 100
+          },
+          {
+            "title": "Midterm Exam",
+            "score": 72,
+            "maxScore": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "30",
+      "name": "Faith Nyambura",
+      "email": "faith.nyambura@brightpath.edu",
+      "age": 18,
+      "gender": "Female",
+      "course": "Data Analytics",
+      "teacherId": "3",
+      "teacherEmail": "eunice.kiprono@brightpath.edu",
+      "performance": {
+        "attendance": 93,
+        "grade": "A",
+        "score": 88,
+        "assignments": [
+          {
+            "title": "Assignment 1: Pandas Cleaning",
+            "score": 90,
+            "maxScore": 100
+          },
+          {
+            "title": "Visualization Project",
+            "score": 86,
+            "maxScore": 100
+          }
+        ]
+      }
+    }
   ],
   "teachers": [
-    { "id": "1", "name": "Dr. James Mwangi", "email": "james.mwangi@brightpath.edu", "department": "Software Development" },
-    { "id": "2", "name": "Prof. Sarah Ouma", "email": "sarah.ouma@brightpath.edu", "department": "Cybersecurity" },
-    { "id": "3", "name": "Eunice Kiprono", "email": "eunice.kiprono@brightpath.edu", "department": "Data Analytics" },
-    { "id": "4", "name": "Eng. Mark Kariuki", "email": "mark.kariuki@brightpath.edu", "department": "Networking" },
-    { "id": "5", "name": "Dr. Beatrice Wamalwa", "email": "beatrice.wamalwa@brightpath.edu", "department": "Business IT" },
-    { "id": "6", "name": "Victor Koech", "email": "victor.koech@brightpath.edu", "department": "Software Development" },
-    { "id": "7", "name": "Dr. Amina Sheikh", "email": "amina.sheikh@brightpath.edu", "department": "Cybersecurity" },
-    { "id": "8", "name": "Collins Otieno", "email": "collins.otieno@brightpath.edu", "department": "Business IT" },
-    { "id": "9", "name": "Faith Cheptoo", "email": "faith.cheptoo@brightpath.edu", "department": "Networking" },
-    { "id": "10", "name": "Brian Kiprop", "email": "brian.kiprop@brightpath.edu", "department": "Data Analytics" }
+    {
+      "id": "1",
+      "name": "Dr. James Mwangi",
+      "email": "james.mwangi@brightpath.edu",
+      "department": "Software Development"
+    },
+    {
+      "id": "2",
+      "name": "Prof. Sarah Ouma",
+      "email": "sarah.ouma@brightpath.edu",
+      "department": "Cybersecurity"
+    },
+    {
+      "id": "3",
+      "name": "Eunice Kiprono",
+      "email": "eunice.kiprono@brightpath.edu",
+      "department": "Data Analytics"
+    },
+    {
+      "id": "4",
+      "name": "Eng. Mark Kariuki",
+      "email": "mark.kariuki@brightpath.edu",
+      "department": "Networking"
+    },
+    {
+      "id": "5",
+      "name": "Dr. Beatrice Wamalwa",
+      "email": "beatrice.wamalwa@brightpath.edu",
+      "department": "Business IT"
+    },
+    {
+      "id": "6",
+      "name": "Victor Koech",
+      "email": "victor.koech@brightpath.edu",
+      "department": "Software Development"
+    },
+    {
+      "id": "7",
+      "name": "Dr. Amina Sheikh",
+      "email": "amina.sheikh@brightpath.edu",
+      "department": "Cybersecurity"
+    },
+    {
+      "id": "8",
+      "name": "Collins Otieno",
+      "email": "collins.otieno@brightpath.edu",
+      "department": "Business IT"
+    },
+    {
+      "id": "9",
+      "name": "Faith Cheptoo",
+      "email": "faith.cheptoo@brightpath.edu",
+      "department": "Networking"
+    },
+    {
+      "id": "10",
+      "name": "Brian Kiprop",
+      "email": "brian.kiprop@brightpath.edu",
+      "department": "Data Analytics"
+    }
   ],
   "users": [
-    { "id": "1", "fullName": "System Super Admin", "email": "superadmin@brightpath.edu", "password": "password123", "role": "admin", "adminTier": "super" },
-    { "id": "2", "fullName": "Assistant Admin (Registrar)", "email": "registrar@brightpath.edu", "password": "password123", "role": "admin", "adminTier": "assistant" },
-    { "id": "3", "fullName": "Dr. James Mwangi", "email": "james.mwangi@brightpath.edu", "password": "password123", "role": "teacher", "department": "Software Development" },
-    { "id": "4", "fullName": "Prof. Sarah Ouma", "email": "sarah.ouma@brightpath.edu", "password": "password123", "role": "teacher", "department": "Cybersecurity" },
-    { "id": "5", "fullName": "Eunice Kiprono", "email": "eunice.kiprono@brightpath.edu", "password": "password123", "role": "teacher", "department": "Data Analytics" },
-    { "id": "6", "fullName": "Eng. Mark Kariuki", "email": "mark.kariuki@brightpath.edu", "password": "password123", "role": "teacher", "department": "Networking" },
-    { "id": "7", "fullName": "Dr. Beatrice Wamalwa", "email": "beatrice.wamalwa@brightpath.edu", "password": "password123", "role": "teacher", "department": "Business IT" },
-    { "id": "8", "fullName": "Victor Koech", "email": "victor.koech@brightpath.edu", "password": "password123", "role": "teacher", "department": "Software Development" },
-    { "id": "9", "fullName": "Dr. Amina Sheikh", "email": "amina.sheikh@brightpath.edu", "password": "password123", "role": "teacher", "department": "Cybersecurity" },
-    { "id": "10", "fullName": "Collins Otieno", "email": "collins.otieno@brightpath.edu", "password": "password123", "role": "teacher", "department": "Business IT" },
-    { "id": "11", "fullName": "Faith Cheptoo", "email": "faith.cheptoo@brightpath.edu", "password": "password123", "role": "teacher", "department": "Networking" },
-    { "id": "12", "fullName": "Brian Kiprop", "email": "brian.kiprop@brightpath.edu", "password": "password123", "role": "teacher", "department": "Data Analytics" }
+    {
+      "id": "1",
+      "fullName": "System Super Admin",
+      "email": "superadmin@brightpath.edu",
+      "password": "password123",
+      "role": "admin",
+      "adminTier": "super"
+    },
+    {
+      "id": "2",
+      "fullName": "Assistant Admin (Registrar)",
+      "email": "registrar@brightpath.edu",
+      "password": "password123",
+      "role": "admin",
+      "adminTier": "assistant"
+    },
+    {
+      "id": "3",
+      "fullName": "Dr. James Mwangi",
+      "email": "james.mwangi@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Software Development"
+    },
+    {
+      "id": "4",
+      "fullName": "Prof. Sarah Ouma",
+      "email": "sarah.ouma@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Cybersecurity"
+    },
+    {
+      "id": "5",
+      "fullName": "Eunice Kiprono",
+      "email": "eunice.kiprono@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Data Analytics"
+    },
+    {
+      "id": "6",
+      "fullName": "Eng. Mark Kariuki",
+      "email": "mark.kariuki@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Networking"
+    },
+    {
+      "id": "7",
+      "fullName": "Dr. Beatrice Wamalwa",
+      "email": "beatrice.wamalwa@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Business IT"
+    },
+    {
+      "id": "8",
+      "fullName": "Victor Koech",
+      "email": "victor.koech@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Software Development"
+    },
+    {
+      "id": "9",
+      "fullName": "Dr. Amina Sheikh",
+      "email": "amina.sheikh@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Cybersecurity"
+    },
+    {
+      "id": "10",
+      "fullName": "Collins Otieno",
+      "email": "collins.otieno@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Business IT"
+    },
+    {
+      "id": "11",
+      "fullName": "Faith Cheptoo",
+      "email": "faith.cheptoo@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Networking"
+    },
+    {
+      "id": "12",
+      "fullName": "Brian Kiprop",
+      "email": "brian.kiprop@brightpath.edu",
+      "password": "password123",
+      "role": "teacher",
+      "department": "Data Analytics"
+    }
   ],
   "$schema": "./node_modules/json-server/schema.json"
 }

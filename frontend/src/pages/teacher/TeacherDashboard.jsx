@@ -6,17 +6,41 @@ import StatsCard from "../../components/StatsCard";
 import StatusAlert from "../../components/StatusAlert";
 
 const TeacherDashboard = () => {
-    const { data: students, loading, error } = useFetch(API_ENDPOINTS.STUDENTS);
+    const { data: students, loading: studentsLoading, error: studentsError } = useFetch(API_ENDPOINTS.STUDENTS);
+    const { data: teachers, loading: teachersLoading, error: teachersError } = useFetch(API_ENDPOINTS.TEACHERS);
+
+    const loading = studentsLoading || teachersLoading;
+    const error = studentsError || teachersError;
 
     // Retrieve logged-in teacher details from localStorage
     const currentUser = JSON.parse(localStorage.getItem("user")) || {};
     const teacherName = currentUser.fullName || "Faculty Instructor";
     const teacherDepartment = currentUser.department || "Software Development";
+    const teacherId = currentUser.id;
+    const teacherEmail = currentUser.email;
 
-    // Filter students belonging strictly to the logged-in teacher's department
+    // Filter students strictly by the logged-in teacher's department AND specific teacher assignment
     const departmentStudents = students
-        ? students.filter((student) => student.course.toLowerCase() === teacherDepartment.toLowerCase())
+        ? students.filter((student) => {
+            const matchesDept = student.course.toLowerCase() === teacherDepartment.toLowerCase();
+            const matchesTeacher =
+                student.teacherId === teacherId ||
+                student.teacherEmail?.toLowerCase() === teacherEmail?.toLowerCase() ||
+                (!student.teacherId && !student.teacherEmail); // Fallback for legacy unassigned records
+
+            return matchesDept && matchesTeacher;
+        })
         : [];
+
+    // Analytics Calculations for Teacher's Roster
+    const totalAssigned = departmentStudents.length;
+    const femaleCount = departmentStudents.filter((s) => s.gender === "Female").length;
+    const maleCount = departmentStudents.filter((s) => s.gender === "Male").length;
+    const femalePercentage = totalAssigned > 0 ? Math.round((femaleCount / totalAssigned) * 100) : 0;
+    const malePercentage = totalAssigned > 0 ? Math.round((maleCount / totalAssigned) * 100) : 0;
+
+    // Co-teachers in the same department
+    const deptColleagues = teachers ? teachers.filter((t) => t.department?.toLowerCase() === teacherDepartment.toLowerCase()) : [];
 
     return (
         <div className="container py-4">
@@ -28,7 +52,7 @@ const TeacherDashboard = () => {
                             Department: {teacherDepartment}
                         </span>
                         <h2 className="fw-bold mb-1">Welcome back, {teacherName}!</h2>
-                        <p className="text-white-50 mb-0 small">Overview of student enrollments and roster records for your department.</p>
+                        <p className="text-white-50 mb-0 small">Overview of student enrollments and roster analytics for your classes.</p>
                     </div>
                     <div>
                         <Link to="/teacher/students" className="btn btn-light btn-sm fw-semibold px-3 py-2 rounded-3 shadow-sm">
@@ -40,20 +64,20 @@ const TeacherDashboard = () => {
 
             <StatusAlert loading={loading} error={error} />
 
-            {!loading && !error && students && (
+            {!loading && !error && students && teachers && (
                 <>
                     {/* Stats Overview Row */}
                     <div className="row g-3 mb-4">
                         <StatsCard
-                            title="Department Students"
-                            value={departmentStudents.length}
+                            title="My Assigned Students"
+                            value={totalAssigned}
                             icon="bi-mortarboard"
                             bgClass="bg-success"
                         />
                         <StatsCard
-                            title="Recent Additions"
-                            value={departmentStudents.slice(-3).length}
-                            icon="bi-person-plus"
+                            title="Department Colleagues"
+                            value={deptColleagues.length}
+                            icon="bi-people"
                             bgClass="bg-primary"
                         />
                         <StatsCard
@@ -64,13 +88,84 @@ const TeacherDashboard = () => {
                         />
                     </div>
 
+                    {/* Visual Analytics Widgets Row */}
+                    <div className="row g-4 mb-4">
+                        {/* Gender Distribution Widget */}
+                        <div className="col-lg-6">
+                            <div className="card shadow-sm border-0 rounded-4 hover-elevate h-100">
+                                <div className="card-body p-4">
+                                    <h5 className="fw-bold text-dark mb-3">Roster Gender Distribution</h5>
+                                    <p className="text-muted small mb-3">Demographic breakdown of students assigned to your classes.</p>
+
+                                    <div className="progress mb-3" style={{ height: "24px" }}>
+                                        <div
+                                            className="progress-bar bg-success fw-semibold"
+                                            role="progressbar"
+                                            style={{ width: `${femalePercentage}%` }}
+                                            aria-valuenow={femalePercentage}
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                        >
+                                            Female ({femaleCount})
+                                        </div>
+                                        <div
+                                            className="progress-bar bg-info fw-semibold"
+                                            role="progressbar"
+                                            style={{ width: `${malePercentage}%` }}
+                                            aria-valuenow={malePercentage}
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                        >
+                                            Male ({maleCount})
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-between text-secondary small fw-medium">
+                                        <span>Female: {femalePercentage}%</span>
+                                        <span>Male: {malePercentage}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Department Info Widget */}
+                        <div className="col-lg-6">
+                            <div className="card shadow-sm border-0 rounded-4 hover-elevate h-100">
+                                <div className="card-body p-4">
+                                    <h5 className="fw-bold text-dark mb-3">Department Faculty & Load</h5>
+                                    <p className="text-muted small mb-3">Overview of your department teaching team.</p>
+
+                                    <div className="d-flex flex-column gap-2">
+                                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                            <span className="small fw-semibold text-secondary">Department Name</span>
+                                            <span className="badge bg-success-subtle text-success border border-success-subtle px-2">
+                                                {teacherDepartment}
+                                            </span>
+                                        </div>
+                                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                            <span className="small fw-semibold text-secondary">Total Roster Share</span>
+                                            <span className="badge bg-primary-subtle text-primary border border-primary-subtle px-2">
+                                                {totalAssigned} Students
+                                            </span>
+                                        </div>
+                                        <div className="d-flex justify-content-between align-items-center pb-1">
+                                            <span className="small fw-semibold text-secondary">Department Instructors</span>
+                                            <span className="badge bg-dark-subtle text-dark border border-dark-subtle px-2">
+                                                {deptColleagues.length} Faculty Members
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="row g-4">
                         {/* Recently Enrolled Students Table */}
                         <div className="col-lg-8">
                             <div className="card shadow-sm border-0 rounded-4 hover-elevate h-100">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 className="fw-bold text-dark mb-0">Department Student Roster</h5>
+                                        <h5 className="fw-bold text-dark mb-0">My Student Roster</h5>
                                         <Link to="/teacher/students" className="btn btn-link btn-sm p-0 text-decoration-none fw-semibold">
                                             View All &rarr;
                                         </Link>
@@ -109,7 +204,7 @@ const TeacherDashboard = () => {
                                                 ) : (
                                                     <tr>
                                                         <td colSpan="4" className="text-center text-muted py-4">
-                                                            No student records found for {teacherDepartment}.
+                                                            No student records assigned to your roster.
                                                         </td>
                                                     </tr>
                                                 )}
